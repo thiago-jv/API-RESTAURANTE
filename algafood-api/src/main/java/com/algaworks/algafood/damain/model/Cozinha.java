@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+//@JsonRootName("gastronomia")
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -23,9 +24,9 @@ public class Cozinha implements Serializable {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
+	//@JsonProperty("titulo")
 	@Column(name = "nome", nullable = false)
 	private String nome;
 

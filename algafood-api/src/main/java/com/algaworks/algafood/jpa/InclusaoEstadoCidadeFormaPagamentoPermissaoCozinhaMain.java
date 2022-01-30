@@ -1,5 +1,7 @@
 package com.algaworks.algafood.jpa;
 
+import java.util.List;
+
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +45,14 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 	    Estado e2 = estadoRepository.buscar(2L);
 	    Estado e3 = estadoRepository.buscar(3L);
 		
+	    List<Estado> estados = estadoRepository.listar();
+	    
+	    for (Estado estado : estados) {
+			System.out.println(estado.toString());
+		}
+	    
+	    System.out.println("----------");
+	    
 		Cidade cidade1 = new Cidade();
 		cidade1.setNome("Uberlândia");
 		cidade1.setEstado(e1);
@@ -59,6 +69,13 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		cidadeRepository.salvar(cidade2);
 		cidadeRepository.salvar(cidade3);
 		
+		List<Cidade> cidades = cidadeRepository.listar();
+		for (Cidade cidade : cidades) {
+			System.out.println(cidade.toString());
+		}
+		
+		System.out.println("----------");
+		
 		FormaPagamento formaPagamento1 = new FormaPagamento();
 		formaPagamento1.setDescricao("Cartao de Crédito");
 		
@@ -72,6 +89,14 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		formaPagamentoRepository.salvar(formaPagamento2);
 		formaPagamentoRepository.salvar(formaPagamento3);
 		
+		
+		List<FormaPagamento> formaPagamentos = formaPagamentoRepository.listar();
+		for (FormaPagamento formaPagamento : formaPagamentos) {
+			System.out.println(formaPagamento.toString());
+		}
+		
+		System.out.println("----------");
+		
 		Permissao permissao1 = new Permissao();
 		permissao1.setNome("CONSULTAR_COZINHAS");
 		permissao1.setDescricao("Permite consultar cozinhas");
@@ -83,5 +108,9 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		permissaoRepository.salvar(permissao1);
 		permissaoRepository.salvar(permissao2);
 		
+		List<Permissao> permissaos = permissaoRepository.listar();
+		for (Permissao permissao : permissaos) {
+			System.out.println(permissao.toString());
+		}
 	}
 }

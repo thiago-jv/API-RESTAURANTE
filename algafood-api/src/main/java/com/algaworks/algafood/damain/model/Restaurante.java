@@ -27,7 +27,6 @@ public class Restaurante implements Serializable {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
 	@Column(nullable = false)
