@@ -5,31 +5,30 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.algaworks.algafood.damain.model.Cozinha;
-import com.algaworks.algafood.damain.repository.CozinhaRepository;
+import com.algaworks.algafood.damain.model.Restaurante;
+import com.algaworks.algafood.damain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 
 @Service
-public class CadastroCozinhaService {
+public class CadastroRestauranteService {
 
 	@Autowired
-	private CozinhaRepository cozinhaRepository;
+	private RestauranteRepository restauranteRepository;
 
-	public Cozinha salvar(Cozinha cozinha) {
-		return cozinhaRepository.adicionar(cozinha);
+	public Restaurante salvar(Restaurante restaurante) {
+		return restauranteRepository.adicionar(restaurante);
 	}
 
-	public void excluir(Long cozinhaId) {
+	public void excluir(Long restauranteId) {
 		try {
-			cozinhaRepository.remover(cozinhaId);
+			restauranteRepository.remover(restauranteId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de cozinha com código %d", cozinhaId));
+					String.format("Não existe um cadastro de cozinha com o código %d", restauranteId));
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Cozinha de código %d não pode ser removido, pois está em uso", cozinhaId));
+					String.format("Restaurante de código %d não pode ser removido, pois está em uso", restauranteId));
 		}
-
 	}
 }

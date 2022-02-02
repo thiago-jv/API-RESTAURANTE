@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,11 @@ public class RestauranteRepositoryImpl implements RestauranteRepository{
 	}
 
 	@Override
-	public void remover(Restaurante restaurante) {
-		restaurante = buscar(restaurante.getId());
+	public void remover(Long id) {
+		Restaurante restaurante = buscar(id);
+		if(restaurante == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
 		entityManager.remove(restaurante);
 		
 	}
