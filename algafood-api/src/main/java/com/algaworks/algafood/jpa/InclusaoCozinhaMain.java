@@ -7,8 +7,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
-import com.algaworks.algafood.damain.model.Cozinha;
-import com.algaworks.algafood.damain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.repository.cozinha.CozinhaRepository;
 
 public class InclusaoCozinhaMain {
 

@@ -7,14 +7,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
-import com.algaworks.algafood.damain.model.Cidade;
-import com.algaworks.algafood.damain.model.Estado;
-import com.algaworks.algafood.damain.model.FormaPagamento;
-import com.algaworks.algafood.damain.model.Permissao;
-import com.algaworks.algafood.damain.repository.CidadeRepository;
-import com.algaworks.algafood.damain.repository.EstadoRepository;
-import com.algaworks.algafood.damain.repository.FormaPagamentoRepository;
-import com.algaworks.algafood.damain.repository.PermissaoRepository;
+import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.model.Estado;
+import com.algaworks.algafood.domain.model.FormaPagamento;
+import com.algaworks.algafood.domain.model.Permissao;
+import com.algaworks.algafood.domain.repository.cidade.CidadeRepository;
+import com.algaworks.algafood.domain.repository.estado.EstadoRepository;
+import com.algaworks.algafood.domain.repository.formaPagamento.FormaPagamentoRepository;
+import com.algaworks.algafood.domain.repository.permissao.PermissaoRepository;
 
 public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 
