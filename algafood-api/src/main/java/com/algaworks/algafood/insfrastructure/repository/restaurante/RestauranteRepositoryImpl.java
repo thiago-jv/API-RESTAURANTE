@@ -7,13 +7,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 
-@Component
+@Repository
 public class RestauranteRepositoryImpl implements RestauranteRepository{
 
 	@PersistenceContext
