@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller.teste;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,14 @@ public class TesteController {
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 	
-	//@GetMapping("/cozinhas/por-nome")
-	//public List<Cozinha> cozinhasPorNome(@RequestParam("nome") String nome){
-	//	return cozinhaRepository.consultarPorNome(nome);
-	//}
+	@GetMapping("/cozinhas/por-nome")
+	public List<Cozinha> cozinhasPorNome(@RequestParam("nome") String nome){
+		return cozinhaRepository.findTodosByNome(nome);
+	}
 
+	
+	@GetMapping("/cozinhas/unica-por-nome")
+	public Optional<Cozinha> cozinhaPorNome(String nome){
+		return cozinhaRepository.findByNome(nome);
+	}
 }
