@@ -50,6 +50,11 @@ public class TesteController {
 		return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
 	}
 	
+	@GetMapping("/restaurante/por-nome2")
+	public List<Restaurante> restaurantePorTaxaFrete2(String nome, Long cozinhaId){
+		return restauranteRepository.consultarPorNome(nome, cozinhaId);
+	}
+	
 	@GetMapping("/restaurante/primeiro-por-nome")
 	public Optional<Restaurante> restaurantePrimeiroPorNome(String nome){
 		return restauranteRepository.findFirstRestauranteByNomeContaining(nome);
