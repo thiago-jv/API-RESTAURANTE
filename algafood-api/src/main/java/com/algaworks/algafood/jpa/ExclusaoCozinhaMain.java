@@ -22,9 +22,9 @@ public class ExclusaoCozinhaMain {
 	 Cozinha cozinha = new Cozinha();
 	 cozinha.setId(4L);
 	 
-	 cadastroCozinha.remover(cozinha.getId());
+	 cadastroCozinha.deleteById(cozinha.getId());
 	
-	 List<Cozinha> cozinhas = cadastroCozinha.listar();
+	 List<Cozinha> cozinhas = cadastroCozinha.findAll();
 	 for (Cozinha c : cozinhas) {
 		System.out.println("Id: " +c.getId() + "-" + "Nome: " +c.getNome());
 	}

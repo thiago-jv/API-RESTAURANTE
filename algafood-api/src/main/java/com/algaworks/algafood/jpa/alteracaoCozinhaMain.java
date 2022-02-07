@@ -23,9 +23,9 @@ public class alteracaoCozinhaMain {
 	 cozinha1.setId(4L);
 	 cozinha1.setNome("Japonesas");
 	 
-	 cadastroCozinha.adicionar(cozinha1);
+	 cadastroCozinha.save(cozinha1);
 	 
-	 List<Cozinha> cozinhas = cadastroCozinha.listar();
+	 List<Cozinha> cozinhas = cadastroCozinha.findAll();
 	 for (Cozinha cozinha : cozinhas) {
 		System.out.println("Id: " +cozinha.getId() + "-" + "Nome: " +cozinha.getNome());
 	}

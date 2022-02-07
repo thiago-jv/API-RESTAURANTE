@@ -37,15 +37,15 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		Estado estado3 = new Estado();
 		estado3.setNome("Minas Gerais");
 		
-		estadoRepository.salvar(estado1);
-		estadoRepository.salvar(estado2);
-		estadoRepository.salvar(estado3);
+		estadoRepository.save(estado1);
+		estadoRepository.save(estado2);
+		estadoRepository.save(estado3);
 		
-	    Estado e1 = estadoRepository.buscar(1L);
-	    Estado e2 = estadoRepository.buscar(2L);
-	    Estado e3 = estadoRepository.buscar(3L);
+	    Estado e1 = estadoRepository.findById(1L).orElse(null);
+	    Estado e2 = estadoRepository.findById(2L).orElse(null);
+	    Estado e3 = estadoRepository.findById(3L).orElse(null);
 		
-	    List<Estado> estados = estadoRepository.listar();
+	    List<Estado> estados = estadoRepository.findAll();
 	    
 	    for (Estado estado : estados) {
 			System.out.println(estado.toString());
@@ -65,11 +65,11 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		cidade3.setNome("São Paulo");
 		cidade3.setEstado(e3);
 
-		cidadeRepository.salvar(cidade1);
-		cidadeRepository.salvar(cidade2);
-		cidadeRepository.salvar(cidade3);
+		cidadeRepository.save(cidade1);
+		cidadeRepository.save(cidade2);
+		cidadeRepository.save(cidade3);
 		
-		List<Cidade> cidades = cidadeRepository.listar();
+		List<Cidade> cidades = cidadeRepository.findAll();
 		for (Cidade cidade : cidades) {
 			System.out.println(cidade.toString());
 		}
@@ -85,12 +85,12 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		FormaPagamento formaPagamento3 = new FormaPagamento();
 		formaPagamento3.setDescricao("Dinheiro");
      
-		formaPagamentoRepository.salvar(formaPagamento1);
-		formaPagamentoRepository.salvar(formaPagamento2);
-		formaPagamentoRepository.salvar(formaPagamento3);
+		formaPagamentoRepository.save(formaPagamento1);
+		formaPagamentoRepository.save(formaPagamento2);
+		formaPagamentoRepository.save(formaPagamento3);
 		
 		
-		List<FormaPagamento> formaPagamentos = formaPagamentoRepository.listar();
+		List<FormaPagamento> formaPagamentos = formaPagamentoRepository.findAll();
 		for (FormaPagamento formaPagamento : formaPagamentos) {
 			System.out.println(formaPagamento.toString());
 		}
@@ -105,10 +105,10 @@ public class InclusaoEstadoCidadeFormaPagamentoPermissaoCozinhaMain {
 		permissao2.setNome("EDITAR_COZINHAS");
 		permissao2.setDescricao("Permite editar cozinhas");
 		
-		permissaoRepository.salvar(permissao1);
-		permissaoRepository.salvar(permissao2);
+		permissaoRepository.save(permissao1);
+		permissaoRepository.save(permissao2);
 		
-		List<Permissao> permissaos = permissaoRepository.listar();
+		List<Permissao> permissaos = permissaoRepository.findAll();
 		for (Permissao permissao : permissaos) {
 			System.out.println(permissao.toString());
 		}

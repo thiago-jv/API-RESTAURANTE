@@ -28,18 +28,18 @@ public class InclusaoRestauranteCozinhaMain {
 		Cozinha cozinha02 = new Cozinha();
 		cozinha02.setNome("Americana");
 
-		cadastroCozinha.adicionar(cozinha01);
-		cadastroCozinha.adicionar(cozinha02);
+		cadastroCozinha.save(cozinha01);
+		cadastroCozinha.save(cozinha02);
 
-		List<Cozinha> cozinhas = cadastroCozinha.listar();
+		List<Cozinha> cozinhas = cadastroCozinha.findAll();
 		for (Cozinha cozinha : cozinhas) {
 			System.out.println(cozinha.toString());
 		}
 
 		System.out.println("-------------");
 
-		Cozinha cozinha1 = cadastroCozinha.buscar(1L);
-		Cozinha cozinha2 = cadastroCozinha.buscar(2L);
+		Cozinha cozinha1 = cadastroCozinha.findById(1L).orElse(null);
+		Cozinha cozinha2 = cadastroCozinha.findById(2L).orElse(null);
 
 		Restaurante restaurante1 = new Restaurante();
 		restaurante1.setNome("Thai Gourmet");
@@ -51,10 +51,10 @@ public class InclusaoRestauranteCozinhaMain {
 		restaurante2.setTaxaFrete(BigDecimal.valueOf(9.50));
 		restaurante2.setCozinha(cozinha2);
 
-		cadastroRestaurante.adicionar(restaurante1);
-		cadastroRestaurante.adicionar(restaurante2);
+		cadastroRestaurante.save(restaurante1);
+		cadastroRestaurante.save(restaurante2);
 
-		List<Restaurante> restaurantes = cadastroRestaurante.listar();
+		List<Restaurante> restaurantes = cadastroRestaurante.findAll();
 		for (Restaurante restaurante : restaurantes) {
 			System.out.println(restaurante.toString());
 		}

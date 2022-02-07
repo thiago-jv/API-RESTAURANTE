@@ -26,10 +26,10 @@ public class ConsultaCozinhaMain {
 	 cozinha2.setNome("Japonesa");
 	 
 	 
-	 cadastroCozinha.adicionar(cozinha1);
-	 cadastroCozinha.adicionar(cozinha2);
+	 cadastroCozinha.save(cozinha1);
+	 cadastroCozinha.save(cozinha2);
 	 
-	 List<Cozinha> cozinhas = cadastroCozinha.listar();
+	 List<Cozinha> cozinhas = cadastroCozinha.findAll();
 	 for (Cozinha cozinha : cozinhas) {
 		System.out.println("Id: " +cozinha.getId() + "-" + "Nome: " +cozinha.getNome());
 	}
