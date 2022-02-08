@@ -7,14 +7,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepositoryQueries;
-
-import lombok.var;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
@@ -24,7 +23,20 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 	
 	@Override
 	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal){
-      var jpql = new StringBuilder();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+		CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
+		criteria.from(Restaurante.class);
+		      
+        TypedQuery<Restaurante> query = entityManager.createQuery(criteria);
+        
+        return query.getResultList();
+	}
+}	
+	
+	/*
+	 * public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal){
+	  var jpql = new StringBuilder();
       jpql.append("from Restaurante where 0 = 0 ");
       
       var paramentros = new HashMap<String, Object>(); 
@@ -48,7 +60,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
       
       paramentros.forEach((chave, valor) -> query.setParameter(chave, valor));
       
-      return query.getResultList();
-      
+      return query.getResultList();     
 	}
-}
+	 * 
+	 */
