@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -47,7 +48,7 @@ public class Restaurante implements Serializable {
 	private BigDecimal taxaFrete;
 
 	@ManyToOne
-	@JoinColumn(name = "cozinha_id", nullable = false)
+	@JoinColumn(name = "cozinha_id")
 	private Cozinha cozinha;
 	
 	@JsonIgnore
@@ -55,12 +56,16 @@ public class Restaurante implements Serializable {
 	private Endereco endereco;
 	
 	@CreationTimestamp
-	@Column(columnDefinition = "datetime")
+	@Column
 	private LocalDateTime dataCadastro = LocalDateTime.now();
 	
 	@UpdateTimestamp
-	@Column(columnDefinition = "datetime")
+	@Column
 	private LocalDateTime dataAtualizacao = LocalDateTime.now();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "restaurante")
+	private List<Produto> produtos = new ArrayList<>(); 
 
 	@JsonIgnore
 	@ManyToMany

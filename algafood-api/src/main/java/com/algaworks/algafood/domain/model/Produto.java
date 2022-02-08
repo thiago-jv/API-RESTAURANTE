@@ -1,21 +1,23 @@
 package com.algaworks.algafood.domain.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-//@JsonRootName("gastronomia")
-@Data
 @Entity
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Cozinha implements Serializable {
+public class Produto implements Serializable {
 
 	/**
 	 * 
@@ -24,15 +26,23 @@ public class Cozinha implements Serializable {
 
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//@JsonProperty("titulo")
 	@Column(name = "nome", nullable = false)
 	private String nome;
-	
-//	@JsonIgnore
-//	@OneToMany(mappedBy = "cozinha")
-//	private List<Restaurante> restaurantes = new ArrayList<>();
+
+	@Column(name = "descricao", nullable = false)
+	private String descricao;
+
+	@Column(name = "preco", nullable = false)
+	private BigDecimal preco = BigDecimal.ZERO;
+
+	@Column(name = "ativo", nullable = false)
+	private Boolean ativo;
+
+	@ManyToOne
+	@JoinColumn
+	private Restaurante restaurante;
 
 }
