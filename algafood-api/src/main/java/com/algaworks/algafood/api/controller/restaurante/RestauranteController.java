@@ -74,7 +74,7 @@ public class RestauranteController implements Serializable {
 			Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElse(null);
 			
 			if (restauranteAtual != null) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento");
+				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco");
 				restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
 				return ResponseEntity.ok(restauranteAtual);
 			}
