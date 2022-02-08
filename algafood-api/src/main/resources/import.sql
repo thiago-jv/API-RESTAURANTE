@@ -1,2 +1,3 @@
-//insert into cozinha (id, nome) values (1, 'Tailandeza');
-//insert into cozinha (id, nome) values (2, 'Brasileira');
+INSERT INTO public.restaurante_forma_pagamento(
+	restaurante_id, forma_pagamento_id)
+	VALUES (30, 9);

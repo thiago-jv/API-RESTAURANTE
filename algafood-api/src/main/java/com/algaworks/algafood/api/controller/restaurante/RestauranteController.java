@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.service.restaurante.CadastroRestauranteService;
@@ -76,7 +74,7 @@ public class RestauranteController implements Serializable {
 			Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElse(null);
 			
 			if (restauranteAtual != null) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento");
 				restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
 				return ResponseEntity.ok(restauranteAtual);
 			}
