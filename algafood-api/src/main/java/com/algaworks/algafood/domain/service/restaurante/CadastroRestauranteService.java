@@ -9,24 +9,26 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.cozinha.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
+import com.algaworks.algafood.domain.service.cozinha.CadastroCozinhaService;
 
 @Service
 public class CadastroRestauranteService {
+
+	private static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso";
+
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe um cadastro de restaurante com o código %d";
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 
 	@Autowired
-	private CozinhaRepository cozinhaRepository;
+	private CadastroCozinhaService cadastroCozinhaService;
 
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 
-		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format("Não existe cadastro de cozinha com código %d", cozinhaId)));
+		Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
 
 		restaurante.setCozinha(cozinha);
 		return restauranteRepository.save(restaurante);
@@ -37,10 +39,16 @@ public class CadastroRestauranteService {
 			restauranteRepository.deleteById(restauranteId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de cozinha com o código %d", restauranteId));
+					String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId));
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Restaurante de código %d não pode ser removido, pois está em uso", restauranteId));
-		}
+					String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
+		}	
+	}
+	
+	public Restaurante buscarOuFalhar(Long restauranteId) {
+	    return restauranteRepository.findById(restauranteId)
+	        .orElseThrow(() -> new EntidadeNaoEncontradaException(
+	                String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
 	}
 }
