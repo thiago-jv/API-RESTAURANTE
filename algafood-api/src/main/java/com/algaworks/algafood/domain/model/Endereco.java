@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -9,7 +11,12 @@ import lombok.Data;
 
 @Data
 @Embeddable
-public class Endereco {
+public class Endereco implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Column(name = "endereco_cep")
 	private String cep;
