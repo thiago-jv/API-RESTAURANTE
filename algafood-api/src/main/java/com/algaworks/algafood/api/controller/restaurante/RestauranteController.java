@@ -57,7 +57,6 @@ public class RestauranteController implements Serializable {
 	public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-		restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
 		return cadastroRestauranteService.salvar(restauranteAtual);
 	}
 	

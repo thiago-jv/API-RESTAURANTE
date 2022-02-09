@@ -47,8 +47,6 @@ public class Restaurante implements Serializable {
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-	@JsonIgnore
-	//@JsonIgnoreProperties("hibernateLazyInitializer")
 	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id")
 	private Cozinha cozinha;
