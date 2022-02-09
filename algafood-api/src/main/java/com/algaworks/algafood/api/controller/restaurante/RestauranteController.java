@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -68,17 +67,14 @@ public class RestauranteController implements Serializable {
 			return cadastroRestauranteService.salvar(restauranteAtual);	
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
-		}
-		
+		}	
 	}
 	
 	@PatchMapping("/{restauranteId}")
 	public Restaurante atualizarParcial(@PathVariable Long restauranteId,
 			@RequestBody Map<String, Object> campos) {
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-		
 		merge(campos, restauranteAtual);
-		
 		return atualizar(restauranteId, restauranteAtual);
 	}
 
