@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.service.restaurante.CadastroRestauranteService;
@@ -54,10 +55,9 @@ public class RestauranteController implements Serializable {
 	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
 		try {
 			return cadastroRestauranteService.salvar(restaurante);	
-		} catch (EntidadeNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
-		
 	}
 
 	@PutMapping("/{restauranteId}")
@@ -66,7 +66,7 @@ public class RestauranteController implements Serializable {
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 		try {
 			return cadastroRestauranteService.salvar(restauranteAtual);	
-		} catch (EntidadeNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 		
