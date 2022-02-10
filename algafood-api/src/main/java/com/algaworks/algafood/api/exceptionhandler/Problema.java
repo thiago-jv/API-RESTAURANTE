@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -20,4 +22,6 @@ public class Problema {
 	private String detail;
 	
 	private String mensagemUsuario;
+	
+	private LocalDateTime dataHora;
 }
