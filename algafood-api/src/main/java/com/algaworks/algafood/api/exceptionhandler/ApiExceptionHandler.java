@@ -1,5 +1,8 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
@@ -20,14 +24,33 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
+		Throwable causaRaisProblema = ExceptionUtils.getRootCause(ex);
+		
+		if(causaRaisProblema instanceof InvalidFormatException) {
+			return handleInvalidFormatException((InvalidFormatException) causaRaisProblema, headers, status, request);
+		}
+		
 		TipoProblema tipoProblema = TipoProblema.MENSAGEM_INCOMPREENSIVEL;
 		String detail = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
 		
 		Problema problema = createProblemaBuilder(status, tipoProblema, detail).build();
 		
-		// Na aula ficou passando uma nova instância de HttpHeaders, mas o ideal
-		// é repassar o "headers" que recebemos como argumento do método
-		// return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+		return handleExceptionInternal(ex, problema, headers, status, request);
+	}
+	
+	private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		String path = ex.getPath().stream()
+				.map(ref -> ref.getFieldName())
+				.collect(Collectors.joining("."));
+		
+		TipoProblema tipoProblema = TipoProblema.MENSAGEM_INCOMPREENSIVEL;
+		String detail = String.format("A propriedade '%s' recebeu o valor '%s', "
+				+ "que é de um tipo inválido. Corrija e informe um valor compatível com o tipo %s.",
+				path, ex.getValue(), ex.getTargetType().getSimpleName());
+		
+		Problema problema = createProblemaBuilder(status, tipoProblema, detail).build();
 		
 		return handleExceptionInternal(ex, problema, headers, status, request);
 	}
