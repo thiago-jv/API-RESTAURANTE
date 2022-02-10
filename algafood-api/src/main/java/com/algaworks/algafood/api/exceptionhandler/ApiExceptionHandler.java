@@ -1,14 +1,17 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -257,8 +260,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		TipoProblema tipoProblema = TipoProblema.DADOS_INVALIDOS;
 		String detail = "Um ou mais campos estão inválidos. Faça o preenchimentocorreto e tente novamente";
 		
+		// dentro de bindResult, temos os campos com as violações
+		BindingResult bindResult = ex.getBindingResult();
+		
+		List<Problema.Campo> camposComProblemas = bindResult.getFieldErrors().stream()
+				.map(campoErro -> Problema.Campo.builder()
+						.nome(campoErro.getField())
+						.mensagemUsuario(campoErro.getDefaultMessage())
+						.build())
+				.collect(Collectors.toList());
+		
 		Problema problema = createProblemaBuilder(status, tipoProblema, detail)
 		    .mensagemUsuario(detail)
+		    .campos(camposComProblemas)
 		    .build();
 		
 		return handleExceptionInternal(ex, problema, headers, status, request);
