@@ -18,4 +18,6 @@ public class Problema {
 	private String title;
 	
 	private String detail;
+	
+	private String mensagemUsuario;
 }

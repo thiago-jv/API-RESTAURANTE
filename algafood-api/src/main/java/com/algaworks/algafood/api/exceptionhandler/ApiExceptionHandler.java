@@ -25,6 +25,9 @@ import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
+	private static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. "
+	+ "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+
 	// trata erro de sintaxe no código
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
@@ -84,7 +87,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		HttpStatus status = HttpStatus.CONFLICT;
 		TipoProblema tipoProblema = TipoProblema.ENTIDADE_EM_USO;
 		
-		Problema problema = createProblemaBuilder(status, tipoProblema, ex.getMessage()).build();
+		Problema problema = createProblemaBuilder(status, tipoProblema, ex.getMessage())
+				.mensagemUsuario(ex.getMessage())
+				.build();
 		
 		return handleExceptionInternal(ex, problema, new HttpHeaders(), 
 				status, request);
@@ -167,7 +172,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	    String detail = String.format("A propriedade '%s' não existe. "
 	            + "Corrija ou remova essa propriedade e tente novamente.", path);
 
-	    Problema problema = createProblemaBuilder(status, tipoProblema, detail).build();
+	    Problema problema = createProblemaBuilder(status, tipoProblema, detail)
+	    		.mensagemUsuario(MSG_ERRO_GENERICA_USUARIO_FINAL)
+	    		.build();
 	    
 	    return handleExceptionInternal(ex, problema, headers, status, request);
 	}  
@@ -207,9 +214,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
 	    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;		
 	    TipoProblema tipoProblema = TipoProblema.ERRO_DE_SISTEMA;
-	    String detail = "Ocorreu um erro interno inesperado no sistema. "
-	            + "Tente novamente e se o problema persistir, entre em contato "
-	            + "com o administrador do sistema.";
+	    String detail = MSG_ERRO_GENERICA_USUARIO_FINAL;
 
 	    // Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos
 	    // fazendo logging) para mostrar a stacktrace no console
