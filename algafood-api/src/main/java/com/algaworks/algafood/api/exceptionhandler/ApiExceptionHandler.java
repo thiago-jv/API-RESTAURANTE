@@ -2,11 +2,15 @@ package com.algaworks.algafood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -253,6 +257,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	    return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
 	}
 	
+	@Autowired
+	private MessageSource messageSource;
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -264,10 +271,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		BindingResult bindResult = ex.getBindingResult();
 		
 		List<Problema.Campo> camposComProblemas = bindResult.getFieldErrors().stream()
-				.map(campoErro -> Problema.Campo.builder()
+				.map(campoErro -> {
+					
+				String message = messageSource.getMessage(campoErro, LocaleContextHolder.getLocale());
+					
+				 return Problema.Campo.builder()
 						.nome(campoErro.getField())
-						.mensagemUsuario(campoErro.getDefaultMessage())
-						.build())
+						.mensagemUsuario(message)
+						.build();
+				})
 				.collect(Collectors.toList());
 		
 		Problema problema = createProblemaBuilder(status, tipoProblema, detail)
