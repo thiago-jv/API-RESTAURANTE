@@ -95,6 +95,18 @@ public class CadastroCozinhaIntegrationTests {
 		 .post()
 		.then()
 		 .statusCode(HttpStatus.CREATED.value());
-		
 	}
+	
+	@Test
+	public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+		given()
+			.pathParam("cozinhaId", 100)
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+	
+	
 }
