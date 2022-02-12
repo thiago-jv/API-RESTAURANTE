@@ -106,6 +106,7 @@ public class CadastroCozinhaIntegrationTests {
 			.get("/{cozinhaId}")
 		.then()
 			.statusCode(HttpStatus.NOT_FOUND.value());
+		
 	}
 	
 	
