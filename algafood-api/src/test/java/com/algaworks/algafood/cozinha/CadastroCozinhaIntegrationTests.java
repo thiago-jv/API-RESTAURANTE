@@ -1,6 +1,9 @@
 package com.algaworks.algafood.cozinha;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -78,7 +81,20 @@ public class CadastroCozinhaIntegrationTests {
 		.when()
 		  .get()
 		.then()
-		   .body("nome", Matchers.hasSize(4))
-		   .body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
+		   .body("nome", hasSize(4))
+		   .body("nome", hasItems("Indiana", "Tailandesa"));
+	}
+	
+	@Test
+	public void testeRetornandoStatus201_QuandoCadastrarCozinha() {
+		given()
+		 .body("{ \"nome\": \"Chinesa\" }")
+		 .contentType(ContentType.JSON)
+		 .accept(ContentType.JSON)
+		.when()
+		 .post()
+		.then()
+		 .statusCode(HttpStatus.CREATED.value());
+		
 	}
 }
