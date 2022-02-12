@@ -1,23 +1,25 @@
 package com.algaworks.algafood.cozinha;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.given;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.service.cozinha.CadastroCozinhaService;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaIntegrationTests {
 
-	@Autowired
-	private CadastroCozinhaService cozinhaService;
+	@LocalServerPort
+	private int port;
 	
+	/*
 	@Test
 	public void testarCadastroCozinhaComSucesso() {
 		// cenáro
@@ -25,7 +27,7 @@ public class CadastroCozinhaIntegrationTests {
 		novaCozinha.setNome("Chineza");
 		
 		// acão
-		novaCozinha = cozinhaService.salvar(novaCozinha);
+		novaCozinha = cadastroCozinhaService.salvar(novaCozinha);
 		
 		// validação
 		assertThat(novaCozinha).isNotNull();
@@ -37,6 +39,27 @@ public class CadastroCozinhaIntegrationTests {
 		Cozinha novaCozinha = new Cozinha();
 		novaCozinha.setNome(null);
 		
-		novaCozinha = cozinhaService.salvar(novaCozinha);
+		novaCozinha = cadastroCozinhaService.salvar(novaCozinha);
+	}
+	
+	@Test(expected = EntidadeEmUsoException.class)
+    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+		cadastroCozinhaService.excluir(1L);
+    }
+    */
+	
+	@Test
+	public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+		// habilita os logs para analise
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		
+		given()
+		.basePath("/cozinhas")
+		.port(port)
+		.accept(ContentType.JSON)
+		.when()
+		.get()
+		.then()
+		.statusCode(HttpStatus.OK.value());
 	}
 }
