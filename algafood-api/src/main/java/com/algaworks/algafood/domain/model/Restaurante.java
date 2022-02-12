@@ -50,7 +50,6 @@ public class Restaurante implements Serializable {
 	@Column(nullable = false)
 	private String nome;
     
-	//@PositiveOrZero
 	@TaxaFrete
 	@Multiplo(numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
@@ -61,8 +60,7 @@ public class Restaurante implements Serializable {
 	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id")
 	private Cozinha cozinha;
-	
-	@JsonIgnore
+		
 	@Embedded
 	private Endereco endereco;
 	
@@ -74,11 +72,9 @@ public class Restaurante implements Serializable {
 	@Column
 	private LocalDateTime dataAtualizacao = LocalDateTime.now();
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>(); 
 
-//	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento", 
 	           joinColumns = @JoinColumn(name = "restaurante_id"),

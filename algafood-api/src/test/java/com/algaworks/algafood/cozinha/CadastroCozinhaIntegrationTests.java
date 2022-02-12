@@ -3,9 +3,7 @@ package com.algaworks.algafood.cozinha;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
