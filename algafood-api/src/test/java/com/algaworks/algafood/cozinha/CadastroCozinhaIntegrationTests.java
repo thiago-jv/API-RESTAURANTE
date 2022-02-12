@@ -2,6 +2,7 @@ package com.algaworks.algafood.cozinha;
 
 import static io.restassured.RestAssured.given;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,12 +55,28 @@ public class CadastroCozinhaIntegrationTests {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		
 		given()
-		.basePath("/cozinhas")
-		.port(port)
-		.accept(ContentType.JSON)
+		  .basePath("/cozinhas")
+		  .port(port)
+		  .accept(ContentType.JSON)
 		.when()
-		.get()
+		  .get()
 		.then()
-		.statusCode(HttpStatus.OK.value());
+		  .statusCode(HttpStatus.OK.value());
+	}
+	
+	@Test
+	public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
+		// habilita os logs para analise
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		
+		given()
+		   .basePath("/cozinhas")
+		   .port(port)
+		   .accept(ContentType.JSON)
+		.when()
+		  .get()
+		.then()
+		   .body("nome", Matchers.hasSize(4))
+		   .body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
 	}
 }
