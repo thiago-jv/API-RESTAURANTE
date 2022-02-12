@@ -1,7 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -139,7 +139,7 @@ public class InsertGeral {
 		Restaurante restaurante1 = new Restaurante();
 		restaurante1.setNome("Thai Gourmet");
 		restaurante1.setTaxaFrete(BigDecimal.valueOf(10));
-		restaurante1.setDataCadastro(LocalDateTime.now());
+		restaurante1.setDataCadastro(OffsetDateTime.now());
 		restaurante1.setCozinha(cozinha1);
 		restaurante1.setEndereco(endereco1);
 	
@@ -147,7 +147,7 @@ public class InsertGeral {
 		Restaurante restaurante2 = new Restaurante();
 		restaurante2.setNome("Thai Delivery");
 		restaurante2.setTaxaFrete(BigDecimal.valueOf(9.50));
-		restaurante2.setDataCadastro(LocalDateTime.now());
+		restaurante2.setDataCadastro(OffsetDateTime.now());
 		restaurante2.setCozinha(cozinha2);
 		restaurante2.setEndereco(endereco1);
 

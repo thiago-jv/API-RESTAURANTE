@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,11 +66,11 @@ public class Restaurante implements Serializable {
 	
 	@CreationTimestamp
 	@Column
-	private LocalDateTime dataCadastro = LocalDateTime.now();
+	private OffsetDateTime dataCadastro = OffsetDateTime.now();
 	
 	@UpdateTimestamp
 	@Column
-	private LocalDateTime dataAtualizacao = LocalDateTime.now();
+	private OffsetDateTime dataAtualizacao = OffsetDateTime.now();
 	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>(); 
