@@ -26,7 +26,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.TaxaFrete;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -57,7 +56,7 @@ public class Restaurante implements Serializable {
 
 	@Valid
 	@NotNull
-	@ManyToOne//(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "cozinha_id")
 	private Cozinha cozinha;
 		
