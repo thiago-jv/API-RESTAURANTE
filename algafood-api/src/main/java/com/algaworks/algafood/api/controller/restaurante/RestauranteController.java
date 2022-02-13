@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.model.CozinhaModelDTO;
+import com.algaworks.algafood.api.model.RestauranteModelDTO;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -48,37 +51,41 @@ public class RestauranteController implements Serializable {
 	private CadastroRestauranteService cadastroRestauranteService;
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteRepository.findAll();
+	public List<RestauranteModelDTO> listar() {
+		return toCollectionModelDTO(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable("restauranteId") Long restauranteId) {
-	  return cadastroRestauranteService.buscarOuFalhar(restauranteId);    	
+	public RestauranteModelDTO buscar(@PathVariable("restauranteId") Long restauranteId) {
+	   Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+	   
+	   RestauranteModelDTO restauranteModelDTO = toModelDTO(restaurante);
+	   
+	   return restauranteModelDTO;     	
 	}
-
+	
 	@PostMapping
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteModelDTO adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
-			return cadastroRestauranteService.salvar(restaurante);	
+			return toModelDTO(cadastroRestauranteService.salvar(restaurante));	
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+	public RestauranteModelDTO atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 		try {
-			return cadastroRestauranteService.salvar(restauranteAtual);	
+			return toModelDTO(cadastroRestauranteService.salvar(restauranteAtual));	
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}	
 	}
 	
 	@PatchMapping("/{restauranteId}")
-	public Restaurante atualizarParcial(@PathVariable Long restauranteId,
+	public RestauranteModelDTO atualizarParcial(@PathVariable Long restauranteId,
 			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		merge(campos, restauranteAtual, request);
@@ -107,6 +114,26 @@ public class RestauranteController implements Serializable {
 			Throwable rootCause = ExceptionUtils.getRootCause(e);
 			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
 		}
+	}
+	
+	private RestauranteModelDTO toModelDTO(Restaurante restaurante) {
+		RestauranteModelDTO restauranteModelDTO = new RestauranteModelDTO();
+		   CozinhaModelDTO cozinhaModelDTO = new CozinhaModelDTO();
+		   
+		   cozinhaModelDTO.setId(restaurante.getCozinha().getId());
+		   cozinhaModelDTO.setNome(restaurante.getCozinha().getNome());
+		   
+		   restauranteModelDTO.setId(restaurante.getId());
+		   restauranteModelDTO.setNome(restaurante.getNome());
+		   restauranteModelDTO.setTaxaFrete(restaurante.getTaxaFrete());
+		   restauranteModelDTO.setCozinha(cozinhaModelDTO);
+		return restauranteModelDTO;
+	}
+
+	private List<RestauranteModelDTO> toCollectionModelDTO(List<Restaurante> restaurantes){
+		return restaurantes.stream()
+				.map(restaurante -> toModelDTO(restaurante))
+				.collect(Collectors.toList());
 	}
 		
 }
