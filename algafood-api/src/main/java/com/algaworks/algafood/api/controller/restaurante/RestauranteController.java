@@ -74,12 +74,15 @@ public class RestauranteController implements Serializable {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInput restauranteInputDTO) {
+	public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInput restauranteInput) {
+		//Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 		
-		Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInputDTO);
+		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);		
+		restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 		
-		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+		// usando o copyToDomainObject , não preciso mais usar o método abaixo, pois a copia é feita abaixo
+		// BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+				
 		try {
 			return restauranteModelAssembler.toModelDTO(cadastroRestauranteService.salvar(restauranteAtual));	
 		} catch (CozinhaNaoEncontradaException e) {
