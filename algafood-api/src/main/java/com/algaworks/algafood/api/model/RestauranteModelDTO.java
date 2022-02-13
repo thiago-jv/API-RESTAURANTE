@@ -17,5 +17,6 @@ public class RestauranteModelDTO {
 	private BigDecimal taxaFrete;
 	
     private CozinhaModelDTO cozinha;
+    
 	
 }
