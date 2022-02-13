@@ -27,8 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.model.CozinhaModelDTO;
 import com.algaworks.algafood.api.model.RestauranteModelDTO;
+import com.algaworks.algafood.api.model.input.RestauranteInputDTO;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.service.restaurante.CadastroRestauranteService;
@@ -65,8 +67,11 @@ public class RestauranteController implements Serializable {
 	}
 	
 	@PostMapping
-	public RestauranteModelDTO adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteModelDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranInputDTO) {
 		try {
+			
+			Restaurante restaurante = toDomainObject(restauranInputDTO);
+			
 			return toModelDTO(cadastroRestauranteService.salvar(restaurante));	
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -74,7 +79,10 @@ public class RestauranteController implements Serializable {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteModelDTO atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+	public RestauranteModelDTO atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInputDTO restauranteInputDTO) {
+		
+		Restaurante restaurante = toDomainObject(restauranteInputDTO);
+		
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 		try {
@@ -82,38 +90,6 @@ public class RestauranteController implements Serializable {
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}	
-	}
-	
-	@PatchMapping("/{restauranteId}")
-	public RestauranteModelDTO atualizarParcial(@PathVariable Long restauranteId,
-			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
-		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-		merge(campos, restauranteAtual, request);
-		return atualizar(restauranteId, restauranteAtual);
-	}
-
-	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
-         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
-		
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-			
-			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-			
-			dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-				field.setAccessible(true);
-				
-				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-				
-				ReflectionUtils.setField(field, restauranteDestino, novoValor);
-			});
-		} catch (IllegalArgumentException e) {
-			Throwable rootCause = ExceptionUtils.getRootCause(e);
-			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
-		}
 	}
 	
 	private RestauranteModelDTO toModelDTO(Restaurante restaurante) {
@@ -134,6 +110,20 @@ public class RestauranteController implements Serializable {
 		return restaurantes.stream()
 				.map(restaurante -> toModelDTO(restaurante))
 				.collect(Collectors.toList());
+	}
+	
+	private Restaurante toDomainObject(RestauranteInputDTO restauranteInputDTO) {
+		Restaurante restaurante = new Restaurante();
+		
+		restaurante.setNome(restauranteInputDTO.getNome());
+		restaurante.setTaxaFrete(restauranteInputDTO.getTaxaFrete());
+		
+		Cozinha cozinha = new Cozinha();
+		cozinha.setId(restauranteInputDTO.getCozinha().getId());
+		
+		restaurante.setCozinha(cozinha);
+		
+		return restaurante;
 	}
 		
 }

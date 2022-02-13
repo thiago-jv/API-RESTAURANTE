@@ -24,7 +24,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.TaxaFrete;
 
 import lombok.Data;
@@ -50,7 +49,7 @@ public class Restaurante implements Serializable {
 	private String nome;
     
 	@TaxaFrete
-	@Multiplo(numero = 5)
+	//@Multiplo(numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
