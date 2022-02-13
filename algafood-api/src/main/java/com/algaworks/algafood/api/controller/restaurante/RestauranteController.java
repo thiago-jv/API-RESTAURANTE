@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.assembler.RestauranteModelDTOAssembler;
-import com.algaworks.algafood.api.model.RestauranteModelDTO;
-import com.algaworks.algafood.api.model.input.RestauranteInputDTO;
+import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
+import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.model.RestauranteModel;
+import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.service.restaurante.CadastroRestauranteService;
@@ -42,27 +42,30 @@ public class RestauranteController implements Serializable {
 	private CadastroRestauranteService cadastroRestauranteService;
 	
 	@Autowired
-	private RestauranteModelDTOAssembler restauranteModelAssembler;
+	private RestauranteModelAssembler restauranteModelAssembler;
+	
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
 
 	@GetMapping
-	public List<RestauranteModelDTO> listar() {
+	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModelDTO(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")
-	public RestauranteModelDTO buscar(@PathVariable("restauranteId") Long restauranteId) {
+	public RestauranteModel buscar(@PathVariable("restauranteId") Long restauranteId) {
 	   Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 	   
-	   RestauranteModelDTO restauranteModelDTO = restauranteModelAssembler.toModelDTO(restaurante);
+	   RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModelDTO(restaurante);
 	   
 	   return restauranteModelDTO;     	
 	}
 	
 	@PostMapping
-	public RestauranteModelDTO adicionar(@RequestBody @Valid RestauranteInputDTO restauranInputDTO) {
+	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranInputDTO) {
 		try {
 			
-			Restaurante restaurante = toDomainObject(restauranInputDTO);
+			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranInputDTO);
 			
 			return restauranteModelAssembler.toModelDTO(cadastroRestauranteService.salvar(restaurante));	
 		} catch (CozinhaNaoEncontradaException e) {
@@ -71,9 +74,9 @@ public class RestauranteController implements Serializable {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteModelDTO atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInputDTO restauranteInputDTO) {
+	public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInput restauranteInputDTO) {
 		
-		Restaurante restaurante = toDomainObject(restauranteInputDTO);
+		Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInputDTO);
 		
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
@@ -82,20 +85,6 @@ public class RestauranteController implements Serializable {
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}	
-	}
-	
-	private Restaurante toDomainObject(RestauranteInputDTO restauranteInputDTO) {
-		Restaurante restaurante = new Restaurante();
-		
-		restaurante.setNome(restauranteInputDTO.getNome());
-		restaurante.setTaxaFrete(restauranteInputDTO.getTaxaFrete());
-		
-		Cozinha cozinha = new Cozinha();
-		cozinha.setId(restauranteInputDTO.getCozinha().getId());
-		
-		restaurante.setCozinha(cozinha);
-		
-		return restaurante;
 	}
 		
 }
