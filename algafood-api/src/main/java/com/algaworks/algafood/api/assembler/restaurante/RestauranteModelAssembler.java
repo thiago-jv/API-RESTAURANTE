@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.assembler.restaurante;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,13 +16,15 @@ public class RestauranteModelAssembler {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public RestauranteModel toModelDTO(Restaurante restaurante) {
+	// Esse método faz a converssão do Restaurante para RestauranteModel para retorno
+	public RestauranteModel toModel(Restaurante restaurante) {
 		return modelMapper.map(restaurante, RestauranteModel.class);
 	}
 
-	public List<RestauranteModel> toCollectionModelDTO(List<Restaurante> restaurantes){
+	// Esse método retorna uma lista de RestauranteModel, recebendo uma lista de restaurantes
+	public List<RestauranteModel> toCollectionModel(List<Restaurante> restaurantes){
 		return restaurantes.stream()
-				.map(restaurante -> toModelDTO(restaurante))
+				.map(restaurante -> toModel(restaurante)) // passando cada restaurante 
 				.collect(Collectors.toList());
 	}
 }

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
-import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.assembler.restaurante.RestauranteInputDisassembler;
+import com.algaworks.algafood.api.assembler.restaurante.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -48,14 +48,14 @@ public class RestauranteController implements Serializable {
 
 	@GetMapping
 	public List<RestauranteModel> listar() {
-		return restauranteModelAssembler.toCollectionModelDTO(restauranteRepository.findAll());
+		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable("restauranteId") Long restauranteId) {
 	   Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 	   
-	   RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModelDTO(restaurante);
+	   RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModel(restaurante);
 	   
 	   return restauranteModelDTO;     	
 	}
@@ -66,7 +66,7 @@ public class RestauranteController implements Serializable {
 			
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranInputDTO);
 			
-			return restauranteModelAssembler.toModelDTO(cadastroRestauranteService.salvar(restaurante));	
+			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restaurante));	
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -83,7 +83,7 @@ public class RestauranteController implements Serializable {
 		// BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 				
 		try {
-			return restauranteModelAssembler.toModelDTO(cadastroRestauranteService.salvar(restauranteAtual));	
+			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));	
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}	

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.assembler.restaurante;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,13 @@ import com.algaworks.algafood.domain.model.Restaurante;
 @Component
 public class RestauranteInputDisassembler {
 
+	// modelMapper não é um componente do spring, se faz necessário criar uma classe de configuração ModelMapperConfig
+	
 	@Autowired
 	private ModelMapper modelMapper;
 
+	// Método responsável por pegar a Classe RestauranteInput, que contém as
+	// validações e converter para a classe Restaurante
 	public Restaurante toDomainObject(RestauranteInput restauranteInput) {
 		return modelMapper.map(restauranteInput, Restaurante.class);
 	}
