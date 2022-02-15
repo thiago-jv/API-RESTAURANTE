@@ -52,6 +52,8 @@ public class Restaurante implements Serializable {
 	//@Multiplo(numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
+	
+	private Boolean ativo = Boolean.TRUE;
 
 	@Valid
 	@NotNull
@@ -78,4 +80,12 @@ public class Restaurante implements Serializable {
 	           joinColumns = @JoinColumn(name = "restaurante_id"),
 	           inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private List<FormaPagamento> formaPagamentos = new ArrayList<>();
+	
+	public void ativar() {
+		setAtivo(true);
+	}
+	
+	public void inativo() {
+		setAtivo(false);
+	}
 }
