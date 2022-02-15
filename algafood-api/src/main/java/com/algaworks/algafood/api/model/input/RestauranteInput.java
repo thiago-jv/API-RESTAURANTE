@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.algaworks.algafood.api.model.input.id.CozinhaInputId;
 import com.algaworks.algafood.core.validation.TaxaFrete;
 
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class RestauranteInput {
 	
 	@Valid
 	@NotNull
-	private CozinhaInput cozinha;
+	private CozinhaInputId cozinha;
+	
+	private EnderecoInput endereco;
 }

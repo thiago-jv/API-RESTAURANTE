@@ -21,6 +21,8 @@ public class RestauranteModel {
 	private BigDecimal taxaFrete;
 	
 	private Boolean ativo;
+	
+	private EnderecoModel endereco;
 
 	private CozinhaModel cozinha;
 
