@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.grupo.GrupoInputDisassembler;
 import com.algaworks.algafood.api.assembler.grupo.GrupoModelAssempler;
-import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.GrupoModel;
-import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
 import com.algaworks.algafood.api.model.input.GrupoInput;
-import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.grupo.GrupoRepository;
 import com.algaworks.algafood.domain.service.grupo.GrupoService;
