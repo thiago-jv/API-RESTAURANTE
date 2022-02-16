@@ -9,7 +9,7 @@ import com.algaworks.algafood.domain.repository.permissao.PermissaoRepository;
 
 @Service
 public class CadastroPermissaoService {
-
+	
     @Autowired
     private PermissaoRepository permissaoRepository;
     
