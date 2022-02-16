@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -36,6 +38,9 @@ public class Pedido {
     private BigDecimal subtotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
+    
+    private String codigo;
+    
 
     @Embedded
     private Endereco enderecoEntrega;
@@ -83,4 +88,9 @@ public class Pedido {
         getItens().forEach(item -> item.setPedido(this));
     }
     
+    // antes de inserir um novo registro, executa este método
+    @PrePersist
+    private void gerarCodigo() {
+    	setCodigo(UUID.randomUUID().toString());
+    }
 }
