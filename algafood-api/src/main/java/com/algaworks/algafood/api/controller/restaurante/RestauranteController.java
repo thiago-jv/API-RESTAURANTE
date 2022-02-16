@@ -25,6 +25,7 @@ import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cidade.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.restaurante.RestauranteNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.service.restaurante.CadastroRestauranteService;
@@ -97,6 +98,26 @@ public class RestauranteController implements Serializable {
 		}
 	}
 
+	@PutMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+		try {
+			cadastroRestauranteService.ativar(restaurantesIds);
+		} catch (RestauranteNaoEncontradaException e) {
+		     throw new NegocioException(e.getMessage(), e);
+		}
+	}
+	
+	@DeleteMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+		try {
+			cadastroRestauranteService.inativar(restaurantesIds);	
+		} catch (RestauranteNaoEncontradaException e) {
+		     throw new NegocioException(e.getMessage(), e);
+		}
+	}
+	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativo")
 	public void ativar(@PathVariable Long restauranteId) {
