@@ -14,12 +14,14 @@ import com.algaworks.algafood.domain.model.Endereco;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Permissao;
+import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.cidade.CidadeRepository;
 import com.algaworks.algafood.domain.repository.cozinha.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.estado.EstadoRepository;
 import com.algaworks.algafood.domain.repository.formaPagamento.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.repository.permissao.PermissaoRepository;
+import com.algaworks.algafood.domain.repository.produto.ProdutoRepository;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 
 public class InsertGeral {
@@ -34,6 +36,7 @@ public class InsertGeral {
 		PermissaoRepository permissaoRepository = applicationContext.getBean(PermissaoRepository.class);
 		CozinhaRepository cadastroCozinha = applicationContext.getBean(CozinhaRepository.class);
 		RestauranteRepository cadastroRestaurante = applicationContext.getBean(RestauranteRepository.class);
+		ProdutoRepository cadastroProduto = applicationContext.getBean(ProdutoRepository.class);
 		
 		/////////////// ESTADO ///////////
 		Estado estado1 = new Estado();
@@ -156,6 +159,18 @@ public class InsertGeral {
 		
 
         /////////////// COZINHA ///////////
+		
+        /////////////// PRODUTO ///////////
+		
+		Produto produto = new Produto();
+		produto.setNome("Cola de produto");
+		produto.setDescricao("Produto x galera");
+		produto.setPreco(BigDecimal.TEN);
+		produto.setAtivo(true);
+		
+        /////////////// PRODUTO ///////////
+		
+		
 
 	}
 

@@ -43,10 +43,10 @@ public class RestauranteController implements Serializable {
 
 	@Autowired
 	private CadastroRestauranteService cadastroRestauranteService;
-	
+
 	@Autowired
 	private RestauranteModelAssembler restauranteModelAssembler;
-	
+
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
@@ -57,53 +57,67 @@ public class RestauranteController implements Serializable {
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable("restauranteId") Long restauranteId) {
-	   Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-	
-	   RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModel(restaurante);
-	   
-	   return restauranteModelDTO;     	
+		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+
+		RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModel(restaurante);
+
+		return restauranteModelDTO;
 	}
-	
+
 	@PostMapping
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranInputDTO) {
 		try {
-			
+
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranInputDTO);
-			
-			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restaurante));	
+
+			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInput restauranteInput) {
-		//Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-		
-		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);		
+	public RestauranteModel atualizar(@PathVariable Long restauranteId,
+			@RequestBody RestauranteInput restauranteInput) {
+		// Restaurante restaurante =
+		// restauranteInputDisassembler.toDomainObject(restauranteInput);
+
+		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
-		
-		// usando o copyToDomainObject , não preciso mais usar o método abaixo, pois a copia é feita abaixo
-		// BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-				
+
+		// usando o copyToDomainObject , não preciso mais usar o método abaixo, pois a
+		// copia é feita abaixo
+		// BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
+		// "formasPagamento", "endereco", "dataCadastro", "produtos");
+
 		try {
-			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));	
+			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
-		}	
+		}
 	}
-	
+
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativo")
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.ativar(restauranteId);
 	}
-	
+
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{restauranteId}/inativo")
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.inativa(restauranteId);
 	}
-		
-}
 
+	@PutMapping("/{restauranteId}/abertura")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void abrir(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.abrir(restauranteId);
+	}
+
+	@PutMapping("/{restauranteId}/fechamento")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void fechar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.fechar(restauranteId);
+	}
+}

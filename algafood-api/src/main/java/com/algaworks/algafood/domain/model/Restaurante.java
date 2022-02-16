@@ -56,7 +56,9 @@ public class Restaurante implements Serializable {
 	private BigDecimal taxaFrete;
 	
 	private Boolean ativo = Boolean.TRUE;
-
+	
+	private Boolean aberto = Boolean.FALSE;
+	
 	@Valid
 	@NotNull
 	@ManyToOne
@@ -98,4 +100,12 @@ public class Restaurante implements Serializable {
 	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormaPagamentos().add(formaPagamento);
 	}
+	
+	public void abrir() {
+	    setAberto(true);
+	}
+
+	public void fechar() {
+	    setAberto(false);
+	} 
 }

@@ -99,4 +99,18 @@ public class CadastroRestauranteService {
 	        .orElseThrow(() -> new EntidadeNaoEncontradaException(
 	                String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
 	}
+	
+	@Transactional
+	public void abrir(Long restauranteId) {
+	    Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+	    
+	    restauranteAtual.abrir();
+	}
+
+	@Transactional
+	public void fechar(Long restauranteId) {
+	    Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+	    
+	    restauranteAtual.fechar();
+	} 
 }
