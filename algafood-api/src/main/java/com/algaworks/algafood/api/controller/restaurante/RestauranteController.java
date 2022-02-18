@@ -22,6 +22,7 @@ import com.algaworks.algafood.api.assembler.restaurante.RestauranteInputDisassem
 import com.algaworks.algafood.api.assembler.restaurante.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cidade.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.cozinha.CozinhaNaoEncontradaException;
@@ -29,6 +30,7 @@ import com.algaworks.algafood.domain.exception.restaurante.RestauranteNaoEncontr
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.service.restaurante.CadastroRestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +57,13 @@ public class RestauranteController implements Serializable {
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
-
+	
+	@JsonView(RestauranteView.Resumo.class)
+	@GetMapping(params = "projecao=resumo")
+	public List<RestauranteModel> listarResumido() {
+		return listar();
+	}
+	
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable("restauranteId") Long restauranteId) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
