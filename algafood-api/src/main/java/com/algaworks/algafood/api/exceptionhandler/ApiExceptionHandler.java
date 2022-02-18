@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,6 +35,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
 	private static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. "
 	+ "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+	
+	
+	@Override
+	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+			WebRequest request) {
+		
+		return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+	}
 
 	// trata erro de sintaxe no código
 	@Override
@@ -262,13 +271,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 	
+		return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+	}
+
+	// tratando o BindException - no caso quando passamos um paramentro com informaçoes inconsistentes, essa exception será lançada
+	private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request, BindingResult bindingResult) {
+		
 		TipoProblema tipoProblema = TipoProblema.DADOS_INVALIDOS;
 		String detail = "Um ou mais campos estão inválidos. Faça o preenchimentocorreto e tente novamente";
 		
-		// dentro de bindResult, temos os campos com as violações
-		BindingResult bindResult = ex.getBindingResult();
 		
-		List<Problema.Campo> camposComProblemas = bindResult.getFieldErrors().stream()
+		List<Problema.Campo> camposComProblemas = bindingResult.getFieldErrors().stream()
 				.map(campoErro -> {
 					
 				String message = messageSource.getMessage(campoErro, LocaleContextHolder.getLocale());
