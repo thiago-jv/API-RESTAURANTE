@@ -27,8 +27,10 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.repository.pedido.PedidoRepository;
 import com.algaworks.algafood.domain.service.pedido.EmissaoPedidoService;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
@@ -61,6 +63,13 @@ public class PedidoController {
 	@GetMapping("/resume")
 	public List<PedidoResumeModel> listarResume() {
 		List<Pedido> todosPedidos = pedidoRepository.findAll();
+
+		return pedidoResumeModelAssembler.toCollectionModel(todosPedidos);
+	}
+	
+	@GetMapping("/filterPesquisar")
+	public List<PedidoResumeModel> pesquisar(PedidoFilter pedidoFilter) {
+		List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter));
 
 		return pedidoResumeModelAssembler.toCollectionModel(todosPedidos);
 	}
