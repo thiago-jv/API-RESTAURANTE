@@ -27,6 +27,7 @@ import com.algaworks.algafood.api.assembler.pedido.PedidoResumeModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.api.model.resume.PedidoResumeModel;
+import com.algaworks.algafood.core.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
@@ -37,6 +38,7 @@ import com.algaworks.algafood.domain.service.pedido.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.common.collect.ImmutableMap;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -80,6 +82,8 @@ public class PedidoController {
 	
 	@GetMapping("/pageable")
 	public Page<PedidoResumeModel> pesquisarPageable(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
+		
+		pageable = traduzirPageable(pageable);
 		
 		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
 
@@ -132,5 +136,15 @@ public class PedidoController {
 	    } catch (EntidadeNaoEncontradaException e) {
 	        throw new NegocioException(e.getMessage(), e);
 	    }
+	}
+	
+	private Pageable traduzirPageable(Pageable pageable) {
+		var mapeamento = ImmutableMap.of(
+				"codigo", "codigo",
+				"restaurante.nome", "restaurante.nome",
+				"nomeCliente", "cliente.nome",
+				"valorTotal", "valorTotal"
+				);
+		return PageableTranslator.translate(pageable, mapeamento);
 	}
 }
