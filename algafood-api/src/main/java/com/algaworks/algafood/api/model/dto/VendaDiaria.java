@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class VendaDiaria {
 
-	//trabalhar na solução depois
+	//trabalhar a solução depois
 	//private String data;
 	
 	private Long totalVendas;
