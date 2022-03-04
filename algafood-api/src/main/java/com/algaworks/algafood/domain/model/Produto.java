@@ -44,5 +44,7 @@ public class Produto implements Serializable {
 	@ManyToOne
 	@JoinColumn
 	private Restaurante restaurante;
+	
+	
 
 }
