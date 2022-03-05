@@ -25,11 +25,13 @@ public class CatalogoFotoProdutoService {
 	public FotoProduto salvar(FotoProduto foto, InputStream inputStream) {
 		Long restauranteId = foto.getProduto().getRestaurante().getId();
 		Long produtoId = foto.getProduto().getId();
+		String nomeArquivoExistente = null;
 		
 		Optional<FotoProduto> fotoExistente = produtoRepository
 				.findFotoById(restauranteId, produtoId);
 		
 		if(fotoExistente.isPresent()) {
+	        nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
 			produtoRepository.delete(fotoExistente.get());
 		}
 	
@@ -44,7 +46,14 @@ public class CatalogoFotoProdutoService {
 				.inputStream(inputStream)
 				.build();
 		
+		/* podemos utilizar dessa 
+		fotoStorageService.remover(nomeArquivoExistente);
 		fotoStorageService.armazenar(novaFoto);
+		*/
+		
+		// ou 
+		
+		fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 		
 		return foto;
 	
