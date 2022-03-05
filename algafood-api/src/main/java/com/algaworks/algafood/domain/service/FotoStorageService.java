@@ -3,8 +3,6 @@ package com.algaworks.algafood.domain.service;
 import java.io.InputStream;
 import java.util.UUID;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +12,8 @@ public interface FotoStorageService {
 	void remover(String nomeArquivo);
 	
 	void armazenar(NovaFoto novaFoto);
+	
+	InputStream recuperar(String nomeArquivo);
 	
 	default void substituir(String nomeArquivoAntigo, NovaFoto novaFoto) {
 		this.armazenar(novaFoto);
