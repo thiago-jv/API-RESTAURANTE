@@ -34,7 +34,7 @@ public class RestauranteProdutoFotoController {
 	@Autowired
 	private FotoProdutoModelAssembler fotoProdutoModelAssembler;
 
-	@PutMapping(value =  "/{multpart}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PutMapping(value =  "/multpart/local", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
 		
 		var nomeArquivo = UUID.randomUUID().toString() + "_" +fotoProdutoInput.getArquivo().getOriginalFilename();
