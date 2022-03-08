@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service.email;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -24,6 +25,9 @@ public interface EnvioEmailService {
 		
 		@NotNull
 		private String corpo;
+		
+		@Singular("variavel")
+		private Map<String, Object> variaveis;
 		
 	}
 
