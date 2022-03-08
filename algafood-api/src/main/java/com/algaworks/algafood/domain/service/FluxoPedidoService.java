@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.StatusPedido;
+import com.algaworks.algafood.domain.service.email.EnvioEmailService;
+import com.algaworks.algafood.domain.service.email.EnvioEmailService.Mensagem;
 import com.algaworks.algafood.domain.service.pedido.EmissaoPedidoService;
 
 @Service
@@ -18,6 +20,9 @@ public class FluxoPedidoService {
 	@Autowired
 	private EmissaoPedidoService emissaoPedidoService;
 
+	@Autowired
+	private EnvioEmailService envioEmail;
+	
 	@Transactional
 	public void confirmar(String codigoPedido) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
@@ -29,6 +34,14 @@ public class FluxoPedidoService {
 		
 		pedido.setStatus(StatusPedido.CONFIRMADO);
 		pedido.setDataConfirmacao(OffsetDateTime.now());
+		
+		var mensagem = Mensagem.builder()
+				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+				.corpo("O pedido de código " + pedido.getCodigo() + " foi confirmado!")
+				.destinatario(pedido.getCliente().getEmail())
+				.destinatario("teste@hotmail.com").build();
+	
+		envioEmail.enviar(mensagem);
 	}
 	
 	@Transactional
