@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "algafood.email",
+      "type": "com.algaworks.algafood.core.email.EmailProperties",
+      "sourceType": "com.algaworks.algafood.core.email.EmailProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "algafood.email.remetente",
+      "type": "java.lang.String",
+      "sourceType": "com.algaworks.algafood.core.email.EmailProperties"
+    }
+  ],
+  "hints": []
+}
