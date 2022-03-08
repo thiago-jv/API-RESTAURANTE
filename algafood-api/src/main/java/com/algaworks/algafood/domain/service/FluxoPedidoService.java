@@ -11,8 +11,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.repository.pedido.PedidoRepository;
-import com.algaworks.algafood.domain.service.email.EnvioEmailService;
-import com.algaworks.algafood.domain.service.email.EnvioEmailService.Mensagem;
+
 import com.algaworks.algafood.domain.service.pedido.EmissaoPedidoService;
 
 @Service
@@ -38,16 +37,6 @@ public class FluxoPedidoService {
 		// para o disparo de eventos ser iniciado, o save deve ser chamado, caso contrario não funciona
 		pedidoRepository.save(pedido);
 		
-		/*
-		var mensagem = Mensagem.builder()
-				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-				.corpo("pedido-confirmado.html")
-				.variavel("pedido", pedido)
-				.destinatario(pedido.getCliente().getEmail())
-				.build();
-		
-		envioEmail.enviar(mensagem);
-		*/
 	}
 	
 	@Transactional
