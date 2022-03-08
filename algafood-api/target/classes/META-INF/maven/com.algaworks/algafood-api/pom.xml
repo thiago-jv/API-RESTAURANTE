@@ -21,6 +21,7 @@
 		<java.version>11</java.version>
 		<modelmapper.version>2.3.0</modelmapper.version>
 		<jasperreports.version>6.17.0</jasperreports.version>
+		<springfox.version>2.9.2</springfox.version>
 	</properties>
 
 	<dependencies>
@@ -86,6 +87,12 @@
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox.version}</version>
 		</dependency>
 
 		<dependency>
