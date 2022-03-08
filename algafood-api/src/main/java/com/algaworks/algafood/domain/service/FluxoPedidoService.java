@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.StatusPedido;
+import com.algaworks.algafood.domain.repository.pedido.PedidoRepository;
 import com.algaworks.algafood.domain.service.email.EnvioEmailService;
 import com.algaworks.algafood.domain.service.email.EnvioEmailService.Mensagem;
 import com.algaworks.algafood.domain.service.pedido.EmissaoPedidoService;
@@ -19,10 +20,10 @@ public class FluxoPedidoService {
 
 	@Autowired
 	private EmissaoPedidoService emissaoPedidoService;
-
-	@Autowired
-	private EnvioEmailService envioEmail;
 	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
 	@Transactional
 	public void confirmar(String codigoPedido) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
@@ -32,9 +33,12 @@ public class FluxoPedidoService {
 					pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CONFIRMADO.getDescricao()));
 		}
 		
-		pedido.setStatus(StatusPedido.CONFIRMADO);
-		pedido.setDataConfirmacao(OffsetDateTime.now());
+		pedido.confirmar();
 		
+		// para o disparo de eventos ser iniciado, o save deve ser chamado, caso contrario não funciona
+		pedidoRepository.save(pedido);
+		
+		/*
 		var mensagem = Mensagem.builder()
 				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
 				.corpo("pedido-confirmado.html")
@@ -43,6 +47,7 @@ public class FluxoPedidoService {
 				.build();
 		
 		envioEmail.enviar(mensagem);
+		*/
 	}
 	
 	@Transactional

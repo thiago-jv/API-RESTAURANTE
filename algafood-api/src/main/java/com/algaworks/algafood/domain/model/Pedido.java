@@ -21,14 +21,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
+
+import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class Pedido {
+public class Pedido extends AbstractAggregateRoot<Pedido>{
 
     @EqualsAndHashCode.Include
     @Id
@@ -87,6 +90,15 @@ public class Pedido {
     public void atribuirPedidoAosItens() {
         getItens().forEach(item -> item.setPedido(this));
     }
+    
+    public void confirmar() {
+		setStatus(StatusPedido.CONFIRMADO);
+		setDataConfirmacao(OffsetDateTime.now());
+		
+		// this atribui a propria classe atual que estamos tratando
+		registerEvent(new PedidoConfirmadoEvent(this));
+	}
+	
     
     // antes de inserir um novo registro, executa este método
     @PrePersist
