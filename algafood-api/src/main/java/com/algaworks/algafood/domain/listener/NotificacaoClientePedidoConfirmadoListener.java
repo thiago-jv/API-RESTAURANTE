@@ -1,8 +1,9 @@
 package com.algaworks.algafood.domain.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.algaworks.algafood.domain.service.email.EnvioEmailService;
 import com.algaworks.algafood.domain.service.email.EnvioEmailService.Mensagem;
@@ -15,7 +16,11 @@ public class NotificacaoClientePedidoConfirmadoListener {
 	@Autowired
 	private EnvioEmailService envioEmail;
 	
-	@EventListener
+	// Nesse caso irá enviar o email antes de comitar os dados
+	//@EventListener
+	// Ou
+	// podemos especificar em qual fase queremos executar, nesse caso, será enviado depois que a aplicação for comitada
+	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	public void aoConfirmarPedido(PedidoConfirmadoEvent event) {
 		Pedido pedido = event.getPedido();
 		
