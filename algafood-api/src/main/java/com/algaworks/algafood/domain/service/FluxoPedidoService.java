@@ -50,8 +50,9 @@ public class FluxoPedidoService {
 	                        StatusPedido.CANCELADO.getDescricao()));
 	    }
 	    
-	    pedido.setStatus(StatusPedido.CANCELADO);
-	    pedido.setDataCancelamento(OffsetDateTime.now());
+	    pedido.cancelar();
+	    pedidoRepository.save(pedido);
+	
 	}
 
 	@Transactional

@@ -23,6 +23,7 @@ import javax.persistence.PrePersist;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algaworks.algafood.domain.event.PedidoCanceladoEvent;
 import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 
 import lombok.Data;
@@ -99,6 +100,13 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 		registerEvent(new PedidoConfirmadoEvent(this));
 	}
 	
+    
+    public void cancelar() {
+        setStatus(StatusPedido.CANCELADO);
+        setDataCancelamento(OffsetDateTime.now());
+        
+        registerEvent(new PedidoCanceladoEvent(this));
+    }
     
     // antes de inserir um novo registro, executa este método
     @PrePersist
