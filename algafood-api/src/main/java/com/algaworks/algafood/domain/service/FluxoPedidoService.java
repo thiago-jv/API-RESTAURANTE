@@ -40,8 +40,8 @@ public class FluxoPedidoService {
 				.corpo("pedido-confirmado.html")
 				.variavel("pedido", pedido)
 				.destinatario(pedido.getCliente().getEmail())
-				.destinatario("teste@hotmail.com").build();
-	
+				.build();
+		
 		envioEmail.enviar(mensagem);
 	}
 	

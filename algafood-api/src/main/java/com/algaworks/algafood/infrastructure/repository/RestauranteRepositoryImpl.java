@@ -20,9 +20,6 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.restaurante.RestauranteRepositoryQueries;
 
-import lombok.var;
-
-
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 

@@ -16,7 +16,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Service
-public class SmtpEnvioEmailService implements EnvioEmailService{
+public class SmtpEnvioEmailService implements EnvioEmailService {
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -25,25 +25,22 @@ public class SmtpEnvioEmailService implements EnvioEmailService{
 	private EmailProperties emailProperties;
 	
 	@Autowired
-	private Configuration freeMarketConfig;
+	private Configuration freemarkerConfig;
 	
 	@Override
 	public void enviar(Mensagem mensagem) {
-		
 		try {
-			
 			String corpo = processarTemplate(mensagem);
 			
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			// classe auxiliar que irá ajuadar o mimeMessage
+			
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 			helper.setFrom(emailProperties.getRemetente());
 			helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));
 			helper.setSubject(mensagem.getAssunto());
 			helper.setText(corpo, true);
 			
-			
-			mailSender.send(mimeMessage);	
+			mailSender.send(mimeMessage);
 		} catch (Exception e) {
 			throw new EmailException("Não foi possível enviar e-mail", e);
 		}
@@ -51,13 +48,12 @@ public class SmtpEnvioEmailService implements EnvioEmailService{
 	
 	private String processarTemplate(Mensagem mensagem) {
 		try {
-			Template template = freeMarketConfig.getTemplate(mensagem.getCorpo());
-		
+			Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
+			
 			return FreeMarkerTemplateUtils.processTemplateIntoString(
 					template, mensagem.getVariaveis());
-		
 		} catch (Exception e) {
-			throw new  EmailException("Não foi possível montar o template do e-mail", e);
+			throw new EmailException("Não foi possível montar o template do e-mail", e);
 		}
 	}
 
