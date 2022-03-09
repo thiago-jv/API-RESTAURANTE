@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.model.input.id;
 
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class EstadoInputId {
 
+	@ApiModelProperty(example = "1")
 	@NotNull
 	private Long id;
 }
