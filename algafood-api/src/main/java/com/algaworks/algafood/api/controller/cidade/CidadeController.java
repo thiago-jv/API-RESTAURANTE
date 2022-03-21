@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.cidade.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.cidade.CidadeModelAssembler;
-import com.algaworks.algafood.api.exceptionhandler.Problema;
+import com.algaworks.algafood.api.controller.openapi.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.model.CidadeModel;
 import com.algaworks.algafood.api.model.input.CidadeInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -27,16 +27,9 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.cidade.CidadeRepository;
 import com.algaworks.algafood.domain.service.cidade.CadastroCidadeService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Cidade")
 @RestController
 @RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeController implements Serializable {
+public class CidadeController implements Serializable, CidadeControllerOpenApi {
 
 	/**
 	 * 
@@ -55,24 +48,24 @@ public class CidadeController implements Serializable {
 	@Autowired
 	private CidadeInputDisassembler cidadeInputDisassembler;
 
-	@ApiOperation("Busca todas cidades sem paginação")
 	@GetMapping
+	@Override
 	public List<CidadeModel> buscar() {
 		return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 
-	@ApiOperation("Busca cidade por id sem paginação")
 	@GetMapping("/{cidadeId}")
-	public CidadeModel buscar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
+	@Override
+	public CidadeModel buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
 
 		return cidadeModelAssembler.toModel(cidade);
 	}
 
-	@ApiOperation("Adiciona uma cidade")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade") @RequestBody CidadeInput cidadeInput) {
+	@Override
+	public CidadeModel adicionar(@RequestBody CidadeInput cidadeInput) {
 		try {
 			Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 
@@ -84,15 +77,10 @@ public class CidadeController implements Serializable {
 		}
 	}
 
-	@ApiOperation("Atualiza cidade por id")
-	 @ApiResponses({
-		 @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problema.class),
-		 @ApiResponse(code = 404, message = "Cidade não encontrada ", response = Problema.class)	 
-	 })
 	@PutMapping("/{cidadeId}")
+	@Override
 	public CidadeModel atualizar(
-			@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId,  
-			@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
+			@PathVariable Long cidadeId,
 	        @RequestBody CidadeInput cidadeInput) {
 		try {
 
@@ -109,14 +97,9 @@ public class CidadeController implements Serializable {
 		}
 	}
 
-	@ApiOperation("Deleta uma cidade por id")
-	@ApiResponses({
-		@ApiResponse(code = 204, message = "Cidade excluida"),
-		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problema.class)
-		
-	})
 	@DeleteMapping("/{cidadeId}")
-	public void remover(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
+	@Override
+	public void remover(@PathVariable Long cidadeId) {
 		cadastroCidadeService.excluir(cidadeId);
 	}
 
