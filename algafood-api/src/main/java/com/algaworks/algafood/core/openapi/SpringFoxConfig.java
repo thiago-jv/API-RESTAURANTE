@@ -6,11 +6,13 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.algaworks.algafood.api.controller.openapi.model.PageableOpenApi;
 import com.algaworks.algafood.api.exceptionhandler.Problema;
 import com.fasterxml.classmate.TypeResolver;
 
@@ -48,6 +50,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		  				  .globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessages())
 		  				  .globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessages())
 		  				  .globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
+		  				  .directModelSubstitute(Pageable.class, PageableOpenApi.class)
 		                  .apiInfo(apiInfo());
 	}
 	
