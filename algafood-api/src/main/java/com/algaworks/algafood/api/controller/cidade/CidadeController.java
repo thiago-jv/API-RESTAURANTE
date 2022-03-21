@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.cidade.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.cidade.CidadeModelAssembler;
+import com.algaworks.algafood.api.exceptionhandler.Problema;
 import com.algaworks.algafood.api.model.CidadeModel;
 import com.algaworks.algafood.api.model.input.CidadeInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -29,6 +30,8 @@ import com.algaworks.algafood.domain.service.cidade.CadastroCidadeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Api(tags = "Cidade")
 @RestController
@@ -82,6 +85,10 @@ public class CidadeController implements Serializable {
 	}
 
 	@ApiOperation("Atualiza cidade por id")
+	 @ApiResponses({
+		 @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problema.class),
+		 @ApiResponse(code = 404, message = "Cidade não encontrada ", response = Problema.class)	 
+	 })
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(
 			@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId,  
@@ -103,6 +110,11 @@ public class CidadeController implements Serializable {
 	}
 
 	@ApiOperation("Deleta uma cidade por id")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "Cidade excluida"),
+		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problema.class)
+		
+	})
 	@DeleteMapping("/{cidadeId}")
 	public void remover(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
 		cadastroCidadeService.excluir(cidadeId);
