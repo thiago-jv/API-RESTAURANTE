@@ -28,7 +28,7 @@ import com.algaworks.algafood.domain.repository.cidade.CidadeRepository;
 import com.algaworks.algafood.domain.service.cidade.CadastroCidadeService;
 
 @RestController
-@RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements Serializable, CidadeControllerOpenApi {
 
 	/**
