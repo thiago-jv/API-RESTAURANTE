@@ -29,6 +29,7 @@ import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -57,7 +58,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		  				  .alternateTypeRules(AlternateTypeRules.newRule(
 		  						  typeResolver.resolve(Page.class, CozinhaModel.class),
 		  						  CozinhasModelOpenApi.class))
-		                  .apiInfo(apiInfo());
+		                  .apiInfo(apiInfo())
+		                  .tags(new Tag("Cidades", "Gerencia as cidades"),
+			  				        new Tag("Grupos", "Gerencia os grupos de usuários"),
+			  				        new Tag("Cozinhas", "Gerencia as cozinhas"));
 	}
 	
 
