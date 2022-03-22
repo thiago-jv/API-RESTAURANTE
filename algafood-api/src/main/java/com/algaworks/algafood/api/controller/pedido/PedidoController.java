@@ -27,6 +27,7 @@ import com.algaworks.algafood.api.assembler.pedido.PedidoResumeModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.api.model.resume.PedidoResumeModel;
+import com.algaworks.algafood.api.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -40,9 +41,12 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.common.collect.ImmutableMap;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping(value = "/pedidos")
-public class PedidoController {
+public class PedidoController implements PedidoControllerOpenApi{
 
 	@Autowired
 	private PedidoRepository pedidoRepository;
@@ -73,6 +77,10 @@ public class PedidoController {
 		return pedidoResumeModelAssembler.toCollectionModel(todosPedidos);
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nomes das propriedades para filtar na resposta, separados por virgulas",
+				name = "campos", paramType = "query", type = "string")
+	})
 	@GetMapping("/filterPesquisar")
 	public List<PedidoResumeModel> pesquisar(PedidoFilter pedidoFilter) {
 		List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter));
@@ -114,6 +122,7 @@ public class PedidoController {
 	}
 
 	@GetMapping("/{codigoPedido}")
+	@Override
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 
@@ -122,6 +131,7 @@ public class PedidoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@Override
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
 	    try {
 	        Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
@@ -147,4 +157,5 @@ public class PedidoController {
 				);
 		return PageableTranslator.translate(pageable, mapeamento);
 	}
+
 }
