@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,8 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.service.FotoStorageService;
 import com.algaworks.algafood.domain.service.foto.CatalogoFotoProdutoService;
 import com.algaworks.algafood.domain.service.produto.CadastroProdutoService;
+
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/restaurante/{restauranteId}/produtos/{produtoId}/foto")
@@ -50,6 +53,7 @@ public class RestauranteProdutoFotoController {
 	@Autowired
 	private FotoStorageService fotoStorageService;
 
+	@ApiParam(value = "Arquivo da foto do produto (máximo 500kb, apenas JPG e PNG)", hidden = true)
 	@PutMapping(value =  "/multpart/local", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
 		
@@ -70,12 +74,14 @@ public class RestauranteProdutoFotoController {
 		}
 	}
 	
+	@ApiParam(value = "Arquivo da foto do produto (máximo 500kb, apenas JPG e PNG)", hidden = true)
 	@PutMapping(value =  "/multpartFoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public FotoProdutoModel atualizarFotos(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+	public FotoProdutoModel atualizarFotos(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
+			@Valid FotoProdutoInput fotoProdutoInput, @RequestPart(required = true) MultipartFile arquivo) throws IOException {
 		
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
 		FotoProduto foto = new FotoProduto();
-		MultipartFile arquivo = fotoProdutoInput.getArquivo();
+	//	MultipartFile arquivo = fotoProdutoInput.getArquivo();
 		
 		foto.setProduto(produto);
 		foto.setDescricao(fotoProdutoInput.getDescricao());
