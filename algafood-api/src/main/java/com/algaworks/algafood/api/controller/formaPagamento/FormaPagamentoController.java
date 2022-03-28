@@ -21,13 +21,14 @@ import com.algaworks.algafood.api.assembler.formaPagamento.FormaPagamentoInputDi
 import com.algaworks.algafood.api.assembler.formaPagamento.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
+import com.algaworks.algafood.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.formaPagamento.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.formaPagamento.CadastroFormaPagamentoService;
 
 @RestController
 @RequestMapping(path = "/formas-pagamento" , produces = MediaType.APPLICATION_JSON_VALUE)
-public class FormaPagamentoController {
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi{
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
@@ -42,6 +43,7 @@ public class FormaPagamentoController {
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
     
     @GetMapping
+    @Override
     public List<FormaPagamentoModel> listar() {
         List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
         
@@ -49,6 +51,7 @@ public class FormaPagamentoController {
     }
     
     @GetMapping("/{formaPagamentoId}")
+    @Override
     public FormaPagamentoModel buscar(@PathVariable Long formaPagamentoId) {
         FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
         
@@ -57,6 +60,7 @@ public class FormaPagamentoController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
         
@@ -66,6 +70,7 @@ public class FormaPagamentoController {
     }
     
     @PutMapping("/{formaPagamentoId}")
+    @Override
     public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
             @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
@@ -79,6 +84,7 @@ public class FormaPagamentoController {
     
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public void remover(@PathVariable Long formaPagamentoId) {
         cadastroFormaPagamento.excluir(formaPagamentoId);	
     }   
