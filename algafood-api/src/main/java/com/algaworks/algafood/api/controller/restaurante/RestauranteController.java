@@ -25,6 +25,7 @@ import com.algaworks.algafood.api.assembler.restaurante.RestauranteModelAssemble
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.model.view.RestauranteView;
+import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.cidade.CidadeNaoEncontradaException;
@@ -41,7 +42,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteController implements Serializable {
+public class RestauranteController implements Serializable, RestauranteControllerOpenApi {
 
 	/**
 	 * 
@@ -61,9 +62,20 @@ public class RestauranteController implements Serializable {
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
 	@ApiOperation(value = "Lista restaurantes")
-	@GetMapping
+	@GetMapping(path = "/todos/resumo")
+	@Override
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
+	}
+	
+	@GetMapping(path = "/{restauranteId}")
+	@Override
+	public RestauranteModel buscar(@PathVariable("restauranteId") Long restauranteId) {
+		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+
+		RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModel(restaurante);
+
+		return restauranteModelDTO;
 	}
 	
 	@ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
@@ -80,7 +92,7 @@ public class RestauranteController implements Serializable {
 	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
-	public List<RestauranteModel> listarApenasNome() {
+	public List<RestauranteModel> listarApenasNomes() {
 		return listar();
 	}
 	
@@ -101,17 +113,9 @@ public class RestauranteController implements Serializable {
 		
 		return restaurantesWrapper;
 	}
-	
-	@GetMapping("/{restauranteId}")
-	public RestauranteModel buscar(@PathVariable("restauranteId") Long restauranteId) {
-		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-
-		RestauranteModel restauranteModelDTO = restauranteModelAssembler.toModel(restaurante);
-
-		return restauranteModelDTO;
-	}
 
 	@PostMapping
+	@Override
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranInputDTO) {
 		try {
 
@@ -124,6 +128,7 @@ public class RestauranteController implements Serializable {
 	}
 
 	@PutMapping("/{restauranteId}")
+	@Override
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 			@RequestBody RestauranteInput restauranteInput) {
 		// Restaurante restaurante =
@@ -156,6 +161,7 @@ public class RestauranteController implements Serializable {
 	
 	@DeleteMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Override
 	public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
 		try {
 			cadastroRestauranteService.inativar(restaurantesIds);	
@@ -166,25 +172,30 @@ public class RestauranteController implements Serializable {
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativo")
+	@Override
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.ativar(restauranteId);
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{restauranteId}/inativo")
+	@Override
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.inativa(restauranteId);
 	}
 
 	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Override
 	public void abrir(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.abrir(restauranteId);
 	}
 
 	@PutMapping("/{restauranteId}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Override
 	public void fechar(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.fechar(restauranteId);
 	}
+
 }

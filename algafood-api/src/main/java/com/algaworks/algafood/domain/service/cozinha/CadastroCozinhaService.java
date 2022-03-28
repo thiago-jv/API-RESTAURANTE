@@ -40,6 +40,7 @@ public class CadastroCozinhaService {
 		}
 	}
 	
+	@Transactional
 	public Cozinha buscarOuFalhar(Long cozinhaId) {
 		return cozinhaRepository.findById(cozinhaId)
 				.orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));

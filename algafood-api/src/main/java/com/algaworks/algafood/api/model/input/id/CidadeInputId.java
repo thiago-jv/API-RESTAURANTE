@@ -11,6 +11,6 @@ import lombok.Setter;
 public class CidadeInputId {
 
 	@ApiModelProperty(example = "1", required = true)
-	@NotNull
+//	@NotNull
 	private Long id;
 }

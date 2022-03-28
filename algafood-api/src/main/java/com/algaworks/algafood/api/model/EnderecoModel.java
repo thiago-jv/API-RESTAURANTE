@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.model;
 
+import com.algaworks.algafood.api.model.resume.CidadeResumoModel;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +16,7 @@ public class EnderecoModel {
 	@ApiModelProperty(example = "Rua Floriano Peixoto")
 	private String logradouro;
 
-	@ApiModelProperty(example = "1500")
+	@ApiModelProperty(example = "\"1500\"")
 	private String numero;
 
 	@ApiModelProperty(example = "Apto 901")
@@ -22,5 +24,8 @@ public class EnderecoModel {
 
 	@ApiModelProperty(example = "Centro")
 	private String bairro;
+	
+	@ApiModelProperty(example = "Manaus")
+	private CidadeResumoModel cidade;
 	
 }

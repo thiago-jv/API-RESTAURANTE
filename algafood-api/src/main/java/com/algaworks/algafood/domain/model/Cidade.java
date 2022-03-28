@@ -30,7 +30,7 @@ public class Cidade implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@NotBlank
+//	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	

@@ -111,6 +111,7 @@ public class CadastroRestauranteService {
 		restaurante.adicionarFormaPagamento(formaPagamento);
 	}
 	
+	@Transactional
 	public Restaurante buscarOuFalhar(Long restauranteId) {
 	    return restauranteRepository.findById(restauranteId)
 	        .orElseThrow(() -> new EntidadeNaoEncontradaException(

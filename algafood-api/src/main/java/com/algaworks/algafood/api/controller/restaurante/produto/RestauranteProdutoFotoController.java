@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.algaworks.algafood.api.assembler.foto.FotoProdutoModelAssembler;
 import com.algaworks.algafood.api.model.FotoProdutoModel;
 import com.algaworks.algafood.api.model.input.FotoProdutoInput;
+import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
@@ -38,8 +39,8 @@ import com.algaworks.algafood.domain.service.produto.CadastroProdutoService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/restaurante/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(path = "/restaurante/{restauranteId}/produtos/{produtoId}/foto")
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 	
 	@Autowired
 	private CatalogoFotoProdutoService catalogoFotoProduto;
@@ -55,7 +56,8 @@ public class RestauranteProdutoFotoController {
 
 	@ApiParam(value = "Arquivo da foto do produto (máximo 500kb, apenas JPG e PNG)", hidden = true)
 	@PutMapping(value =  "/multpart/local", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
+	@Override
+	public void atualizarFotoMultPartLocal(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
 		
 		var nomeArquivo = UUID.randomUUID().toString() + "_" +fotoProdutoInput.getArquivo().getOriginalFilename();
 		
@@ -76,7 +78,8 @@ public class RestauranteProdutoFotoController {
 	
 	@ApiParam(value = "Arquivo da foto do produto (máximo 500kb, apenas JPG e PNG)", hidden = true)
 	@PutMapping(value =  "/multpartFoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public FotoProdutoModel atualizarFotos(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
+	@Override
+	public FotoProdutoModel atualizarFotoMultPartBd(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@Valid FotoProdutoInput fotoProdutoInput, @RequestPart(required = true) MultipartFile arquivo) throws IOException {
 		
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
@@ -94,12 +97,14 @@ public class RestauranteProdutoFotoController {
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping
+	@Override
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId) {
 	    FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
 	    
 	    return fotoProdutoModelAssembler.toModel(fotoProduto);
+	 
 	}
 	
 	/*
@@ -142,7 +147,8 @@ public class RestauranteProdutoFotoController {
 	}
 	*/
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.ALL_VALUE)
+	@Override
 	public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, 
 			@PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		
@@ -182,4 +188,5 @@ public class RestauranteProdutoFotoController {
 	        @PathVariable Long produtoId) {
 	    catalogoFotoProduto.excluir(restauranteId, produtoId);
 	}
+
 }
