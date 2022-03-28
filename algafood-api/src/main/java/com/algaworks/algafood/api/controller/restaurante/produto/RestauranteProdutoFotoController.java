@@ -107,7 +107,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	 
 	}
 	
-	/*
+	
 	@GetMapping(produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<InputStreamResource> servirFotoJpeg(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId) {
@@ -125,9 +125,9 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			return ResponseEntity.notFound().build();
 		}
 	}
-	*/
 	
-	/*
+	
+	
 	@GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
 	public ResponseEntity<InputStreamResource> servirFotoPng(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId) {
@@ -145,7 +145,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			return ResponseEntity.notFound().build();
 		}
 	}
-	*/
+	
 	
 	@GetMapping(produces = MediaType.ALL_VALUE)
 	@Override
