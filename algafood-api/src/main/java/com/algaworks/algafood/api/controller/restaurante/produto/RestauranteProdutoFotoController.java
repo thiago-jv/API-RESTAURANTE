@@ -57,7 +57,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@ApiParam(value = "Arquivo da foto do produto (máximo 500kb, apenas JPG e PNG)", hidden = true)
 	@PutMapping(value =  "/multpart/local", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Override
-	public void atualizarFotoMultPartLocal(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
+	public void atualizarFotoMultPartLocal(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
+			@Valid FotoProdutoInput fotoProdutoInput, MultipartFile arquivo) {
 		
 		var nomeArquivo = UUID.randomUUID().toString() + "_" +fotoProdutoInput.getArquivo().getOriginalFilename();
 		
@@ -97,7 +98,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 	}
 	
-	@GetMapping
+	@GetMapping(path = "/todos")
 	@Override
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId) {
@@ -108,7 +109,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	}
 	
 	
-	@GetMapping(produces = MediaType.IMAGE_JPEG_VALUE)
+	@GetMapping(path = "/jpeg", produces = MediaType.IMAGE_JPEG_VALUE)
+	@Override
 	public ResponseEntity<InputStreamResource> servirFotoJpeg(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId) {
 		
@@ -128,7 +130,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	
 	
 	
-	@GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
+	@GetMapping(path = "/png", produces = MediaType.IMAGE_PNG_VALUE)
+	@Override
 	public ResponseEntity<InputStreamResource> servirFotoPng(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId) {
 		
@@ -147,7 +150,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	}
 	
 	
-	@GetMapping(produces = MediaType.ALL_VALUE)
+	@GetMapping(path = "/all", produces = MediaType.ALL_VALUE)
 	@Override
 	public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, 
 			@PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
