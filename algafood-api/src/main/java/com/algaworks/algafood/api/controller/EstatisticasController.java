@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.model.dto.VendaDiaria;
+import com.algaworks.algafood.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.service.VendaQueryService;
 import com.algaworks.algafood.domain.service.VendaReportService;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerOpenApi{
 
 	@Autowired
 	private VendaQueryService queryService;
@@ -26,11 +27,13 @@ public class EstatisticasController {
 	private VendaReportService vendaReportService;
 	
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Override
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filter){
 		return queryService.consultarVendasDiarias(filter);
 	}
 	
 	@GetMapping(path = "/vendas-diarias/report", produces = MediaType.APPLICATION_PDF_VALUE)
+	@Override
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro){
 	
 		byte[] bytesPdf = vendaReportService.emitirVendasDiarias(filtro);

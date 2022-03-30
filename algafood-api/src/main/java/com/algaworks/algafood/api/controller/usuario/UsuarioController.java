@@ -22,13 +22,14 @@ import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.api.model.input.SenhaInput;
 import com.algaworks.algafood.api.model.input.UsuarioComSenhaInput;
 import com.algaworks.algafood.api.model.input.UsuarioInput;
+import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.usuario.UsuarioRepository;
 import com.algaworks.algafood.domain.service.usuario.CadastroUsuarioService;
 
 @RestController
 @RequestMapping(value = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerOpenApi {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -43,6 +44,7 @@ public class UsuarioController {
     private UsuarioInputDisassembler usuarioInputDisassembler;
     
     @GetMapping
+    @Override
     public List<UsuarioModel> listar() {
         List<Usuario> todasUsuarios = usuarioRepository.findAll();
         
@@ -50,6 +52,7 @@ public class UsuarioController {
     }
     
     @GetMapping("/{usuarioId}")
+    @Override
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
         
@@ -58,6 +61,7 @@ public class UsuarioController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
         Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
         usuario = cadastroUsuario.salvar(usuario);
@@ -66,6 +70,7 @@ public class UsuarioController {
     }
     
     @PutMapping("/{usuarioId}")
+    @Override
     public UsuarioModel atualizar(@PathVariable Long usuarioId,
             @RequestBody @Valid UsuarioInput usuarioInput) {
         Usuario usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
@@ -77,6 +82,7 @@ public class UsuarioController {
     
     @PutMapping("/{usuarioId}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {
         cadastroUsuario.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
     }            
