@@ -19,7 +19,7 @@ public interface FormaPagamentoControllerOpenApi {
 	public ResponseEntity<List<FormaPagamentoModel>> listar();
 	
 	@ApiOperation("Busca forma pagamento por id sem paginação")
-    public FormaPagamentoModel buscar(@ApiParam(value = "ID de uma forma de agamento", example = "1") Long formaPagamentoId);
+    public ResponseEntity<FormaPagamentoModel> buscar(@ApiParam(value = "ID de uma forma de agamento", example = "1") Long formaPagamentoId);
     
 	@ApiOperation("Adiciona uma forma de pagamento")
     public FormaPagamentoModel adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova forma de pagamento", 
