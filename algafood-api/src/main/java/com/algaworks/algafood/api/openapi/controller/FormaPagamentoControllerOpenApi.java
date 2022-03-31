@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.openapi.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.algaworks.algafood.api.exceptionhandler.Problema;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
@@ -14,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface FormaPagamentoControllerOpenApi {
 
 	@ApiOperation("Busca todas formas pagamentos sem paginação")
-	public List<FormaPagamentoModel> listar();
+	public ResponseEntity<List<FormaPagamentoModel>> listar();
 	
 	@ApiOperation("Busca forma pagamento por id sem paginação")
     public FormaPagamentoModel buscar(@ApiParam(value = "ID de uma forma de agamento", example = "1") Long formaPagamentoId);
