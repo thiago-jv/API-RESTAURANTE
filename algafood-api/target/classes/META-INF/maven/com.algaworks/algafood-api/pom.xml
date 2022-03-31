@@ -22,6 +22,7 @@
 		<modelmapper.version>2.3.0</modelmapper.version>
 		<jasperreports.version>6.17.0</jasperreports.version>
 		<springfox.version>2.9.2</springfox.version>
+		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 	</properties>
 
 	<dependencies>
@@ -141,6 +142,13 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<dependency>
+		<groupId>org.logback-extensions</groupId>
+		<artifactId>logback-ext-loggly</artifactId>
+		<version>${logback-ext-loggly.version}</version>
+	</dependency>
+	
 	</dependencies>
 
 
