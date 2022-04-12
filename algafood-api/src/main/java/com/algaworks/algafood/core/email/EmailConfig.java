@@ -13,7 +13,7 @@ public class EmailConfig {
     @Autowired
     private EmailProperties emailProperties;
 
-    @Bean
+ //   @Bean
     public EnvioEmailService envioEmailService() {
         // Acho melhor usar switch aqui do que if/else if
         switch (emailProperties.getImpl()) {
