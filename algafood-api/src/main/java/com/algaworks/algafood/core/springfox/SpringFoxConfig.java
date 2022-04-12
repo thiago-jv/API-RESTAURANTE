@@ -21,11 +21,11 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problema;
-import com.algaworks.algafood.api.model.CozinhaModel;
-import com.algaworks.algafood.api.model.resume.PedidoResumeModel;
-import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.PageableOpenApi;
-import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
+import com.algaworks.algafood.api.v1.model.CozinhaModel;
+import com.algaworks.algafood.api.v1.model.resume.PedidoResumeModel;
+import com.algaworks.algafood.api.v1.openapi.model.CozinhasModelOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.PageableOpenApi;
+import com.algaworks.algafood.api.v1.openapi.model.PedidosResumoModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;

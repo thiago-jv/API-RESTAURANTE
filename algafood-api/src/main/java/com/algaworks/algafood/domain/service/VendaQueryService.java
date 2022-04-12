@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 
-import com.algaworks.algafood.api.model.dto.VendaDiaria;
+import com.algaworks.algafood.api.v1.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 
 public interface VendaQueryService {

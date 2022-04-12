@@ -9,7 +9,7 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.stereotype.Repository;
 
-import com.algaworks.algafood.api.model.dto.VendaDiaria;
+import com.algaworks.algafood.api.v1.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.StatusPedido;
