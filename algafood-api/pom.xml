@@ -94,6 +94,12 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${springfox.version}</version>
+			<exclusions>
+			 <exclusion>
+				 <groupId>org.springframework.plugin</groupId>
+				 <artifactId>spring-plugin-core</artifactId>
+			  </exclusion>
+			</exclusions>
 		</dependency>
 		
 		<dependency>
@@ -106,6 +112,12 @@
 		<groupId>io.springfox</groupId>
 		<artifactId>springfox-bean-validators</artifactId>
 		<version>${springfox.version}</version>
+		<exclusions>
+		 <exclusion>
+			 <groupId>org.springframework.plugin</groupId>
+			 <artifactId>spring-plugin-core</artifactId>
+		  </exclusion>
+		 </exclusions>
 	</dependency>	
 
 		<dependency>
