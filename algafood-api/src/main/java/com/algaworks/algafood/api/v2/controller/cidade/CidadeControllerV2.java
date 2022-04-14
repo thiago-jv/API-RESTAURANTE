@@ -47,6 +47,7 @@ public class CidadeControllerV2 implements Serializable {
 	@Autowired
 	private CidadeInputDisassemblerV2 cidadeInputDisassembler;
 
+	
 	@GetMapping
 	public List<CidadeModelV2> buscar() {
 		return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
