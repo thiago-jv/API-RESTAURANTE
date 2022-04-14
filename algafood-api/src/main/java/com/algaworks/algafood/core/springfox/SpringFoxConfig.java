@@ -48,6 +48,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig implements WebMvcConfigurer {
 
+	/*
 	@Bean
 	public Docket docket() {
 		TypeResolver typeResolver = new TypeResolver();
@@ -84,7 +85,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	                    new Tag("Estatísticas", "Estatísticas da AlgaFood"));
 	
 	}
-	
+	*/
 
 	private List<ResponseMessage> globalGetResponseMessages() {
 		return Arrays.asList(

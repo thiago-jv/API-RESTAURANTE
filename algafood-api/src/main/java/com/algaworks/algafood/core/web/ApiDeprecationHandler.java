@@ -27,7 +27,8 @@ public class ApiDeprecationHandler extends HandlerInterceptorAdapter {
 	
 	// desligando a verssão da API
 	
-	@Override
+	
+	/*@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		if (request.getRequestURI().startsWith("/v1/")) {
@@ -37,5 +38,5 @@ public class ApiDeprecationHandler extends HandlerInterceptorAdapter {
 		
 		return true;
 	}
-	
+	*/
 }
