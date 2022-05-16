@@ -27,25 +27,38 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 	 clients.inMemory()
-	  .withClient("algafood-web")
+	  
+	 .withClient("algafood-web")
 	  .secret(passwordEncoder.encode("web123"))
-	  .authorizedGrantTypes("password")
-	  .scopes("write", "read")
-	  .accessTokenValiditySeconds(60 * 60 * 6)
-	  .and()
-	   .withClient("checktoken")
-	    .secret(passwordEncoder.encode("check123"))
-	    .authorizedGrantTypes("password", "refresh_token")
-		  .scopes("write", "read")
-		  .accessTokenValiditySeconds(60 * 60 * 6) // 6h
-		  .refreshTokenValiditySeconds(60 * 24 * 60 * 60)  // 60 dias
-	 .and()
-	    .withClient("faturamento")
-	    .secret(passwordEncoder.encode("faturamento123"))
-	    .authorizedGrantTypes("client_credentials")
-	    .scopes("write", "read");
+	   .authorizedGrantTypes("password")
+	    .scopes("write", "read")
+	    .accessTokenValiditySeconds(60 * 60 * 6)
+	  
+	    .and()
+	    
+	     .withClient("checktoken")
+	      .secret(passwordEncoder.encode("check123"))
+	       .authorizedGrantTypes("password", "refresh_token")
+		    .scopes("write", "read")
+		    .accessTokenValiditySeconds(60 * 60 * 6) // 6h
+		     .refreshTokenValiditySeconds(60 * 24 * 60 * 60)  // 60 dias
 	
-		
+		     .and()
+     	
+		     .withClient("faturamento")
+	          .secret(passwordEncoder.encode("faturamento123"))
+	           .authorizedGrantTypes("client_credentials")
+	           .scopes("write", "read")
+	           
+	           .and()
+	           
+	           .withClient("foodsanalytics")
+		          .secret(passwordEncoder.encode("food123"))
+		           .authorizedGrantTypes("authorization_code")
+		           .scopes("write", "read")
+		           .redirectUris("http://aplicacao-cliente");
+	          // http://localhost:8081/oauth/authorize?response_type=code&client_id=foodsanalytics&state=abc&redirect_uri=http://aplicacao-cliente
+	 
 	}
 	
 	@Override
