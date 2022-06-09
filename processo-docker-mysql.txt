@@ -17,15 +17,18 @@ apos realizar a criação, um código de identificação é gerado, identificand
 
 5- Agora podemos realizar novamente o comando 1 para listar todos os containers, inclusive o novo criado.
 
-6- Configurar o arquivo docker no projeto, entrar e executar o seguinte comando dentro do projeto
+6- Antes de gerar a imagem no passo 7, fazer um clean e install do projeto com o maven via ide eclipse, IntelJ ou similar, 
+pois dessa forma será gerado o jar da aplicação para que seja utilizado na criação da imagem
+
+7- Configurar o arquivo docker no projeto, entrar e executar o seguinte comando dentro do projeto
 -> docker image build -t algafood .
 
-7- Vamos listar a nossa imagem criada
+8- Vamos listar a nossa imagem criada
 -> docker image ls
 
-8- Podemos remover as imagens penduradas ou antigas, opcional!
+9- Podemos remover as imagens penduradas ou antigas, opcional!
 -> docker image prune
 
-9- Agora modemos executar a imagem dentro do container e testar via postman ou similar
+10- Agora modemos executar a imagem dentro do container e testar via postman ou similar
 -> docker container run --rm -p 8080:8080 -e DB_HOST=dev-mysql --network algafood-network algafood
 
