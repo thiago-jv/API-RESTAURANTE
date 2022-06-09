@@ -24,6 +24,7 @@
 		<springfox.version>2.9.2</springfox.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<oauth2-oidc-sdk.version>6.21.2</oauth2-oidc-sdk.version>
+		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 	</properties>
 
 	<dependencies>
@@ -207,5 +208,36 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+  	<profile>
+  		<id>docker</id>
+  		
+  		<build>
+  			<plugins>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>dockerfile-maven-plugin</artifactId>
+					<version>${dockerfile-maven-version}</version>
+					<executions>
+						<execution>
+							<id>default</id>
+							<goals>
+								<goal>build</goal>
+								<goal>push</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<repository>algafood</repository>
+						<buildArgs>
+							<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+						</buildArgs>
+					</configuration>
+				</plugin>
+  			</plugins>
+  		</build>
+  	</profile>
+  </profiles>
 
 </project>

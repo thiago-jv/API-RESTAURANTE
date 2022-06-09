@@ -32,3 +32,10 @@ pois dessa forma será gerado o jar da aplicação para que seja utilizado na cr
 10- Agora modemos executar a imagem dentro do container e testar via postman ou similar
 -> docker container run --rm -p 8080:8080 -e DB_HOST=dev-mysql --network algafood-network algafood
 
+
+Iniciando o docker pelo maven
+1- Após realizar as parametrizações no projeto, entrar no mesmo e executar os seguintes comandos
+-> mvn clean
+-> mvn packge -P nome_do_profile_que_foi_configurado_no_pow.xml
+
+-> mvn packge -Pdocker
