@@ -70,6 +70,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
@@ -96,30 +102,30 @@
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${springfox.version}</version>
 			<exclusions>
-			 <exclusion>
-				 <groupId>org.springframework.plugin</groupId>
-				 <artifactId>spring-plugin-core</artifactId>
-			  </exclusion>
+				<exclusion>
+					<groupId>org.springframework.plugin</groupId>
+					<artifactId>spring-plugin-core</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
-		<groupId>io.springfox</groupId>
-		<artifactId>springfox-swagger-ui</artifactId>
-		<version>${springfox.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>io.springfox</groupId>
-		<artifactId>springfox-bean-validators</artifactId>
-		<version>${springfox.version}</version>
-		<exclusions>
-		 <exclusion>
-			 <groupId>org.springframework.plugin</groupId>
-			 <artifactId>spring-plugin-core</artifactId>
-		  </exclusion>
-		 </exclusions>
-	</dependency>	
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-bean-validators</artifactId>
+			<version>${springfox.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.plugin</groupId>
+					<artifactId>spring-plugin-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<dependency>
 			<groupId>org.modelmapper</groupId>
@@ -155,41 +161,41 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
-		<groupId>org.logback-extensions</groupId>
-		<artifactId>logback-ext-loggly</artifactId>
-		<version>${logback-ext-loggly.version}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-hateoas</artifactId>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-security</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-test</artifactId>
-		<scope>test</scope>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>
+			<groupId>org.logback-extensions</groupId>
+			<artifactId>logback-ext-loggly</artifactId>
+			<version>${logback-ext-loggly.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>
 			spring-boot-starter-oauth2-resource-server
 		</artifactId>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.nimbusds</groupId>
-		<artifactId>oauth2-oidc-sdk</artifactId>
-		<version>${oauth2-oidc-sdk.version}</version>
-	</dependency>
-	
+		</dependency>
+
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>oauth2-oidc-sdk</artifactId>
+			<version>${oauth2-oidc-sdk.version}</version>
+		</dependency>
+
 	</dependencies>
 
 

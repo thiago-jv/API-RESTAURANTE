@@ -1,0 +1,31 @@
+Processo para criar e executar uma imagem docker mysql
+
+1- Primeiro vamos verificar todos os containers ativos e inativos
+-> docker container ls --all
+ou os containers rodando 
+-> docker container ls
+
+2- Caso queira deletar um container existente
+-> docker container rm c2ab6ed1d90f --force
+
+3- Vamos criar uma rede network para os containers e nossas aplicações se comunicarem
+-> docker network create --driver bridge algafood-network
+
+4- Agora vamos criar um container
+-> docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root --network algafood-network --name dev-mysql mysql:8.0
+apos realizar a criação, um código de identificação é gerado, identificando o container
+
+5- Agora podemos realizar novamente o comando 1 para listar todos os containers, inclusive o novo criado.
+
+6- Configurar o arquivo docker no projeto, entrar e executar o seguinte comando dentro do projeto
+-> docker image build -t algafood .
+
+7- Vamos listar a nossa imagem criada
+-> docker image ls
+
+8- Podemos remover as imagens penduradas ou antigas, opcional!
+-> docker image prune
+
+9- Agora modemos executar a imagem dentro do container e testar via postman ou similar
+-> docker container run --rm -p 8080:8080 -e DB_HOST=dev-mysql --network algafood-network algafood
+
